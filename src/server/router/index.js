@@ -25,6 +25,7 @@ const renderHTML = app => `
 `;
 
 export default function renderRoute(req, res) {
+  console.log('rendering', req.url, 'from server');
   const branch = matchRoutes(routes, req.url);
   const promises = [];
 
