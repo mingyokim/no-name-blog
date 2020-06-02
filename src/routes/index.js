@@ -24,7 +24,8 @@ const routes = [
       },
       {
         path: '/writer',
-        component: WriterHome
+        component: WriterHome,
+        exact: true
       },
       {
         component: RedirectToPageNotFound,
