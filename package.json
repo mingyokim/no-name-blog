@@ -4,8 +4,8 @@
   "description": "Blog built with React, Node.js, Express and Webpack.",
   "main": "src/server/index.js",
   "scripts": {
-    "build": "webpack --mode production && babel ./src/server -d build",
-    "start": "npm run build && node src/server/index.js",
+    "build": "webpack --mode production && babel ./src/server -d ./build",
+    "start": "npm run build && NODE_ENV=production node ./build/index.js",
     "client": "webpack --mode development --config ./webpack.config.js/ --watch",
     "server": "nodemon --exec babel-node src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
@@ -13,6 +13,8 @@
   "author": "Min Gyo Kim",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
@@ -34,7 +36,6 @@
     "webpack": "^4.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
     "@babel/node": "^7.10.1",
     "babel-eslint": "^10.0.0",
     "concurrently": "^4.0.0",
