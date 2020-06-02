@@ -19,17 +19,12 @@ const routes = [
         component: PageNotFound
       },
       {
+        path: '/writer/login',
+        component: Login
+      },
+      {
         path: '/writer',
-        component: WriterHome,
-        routes: [
-          {
-            path: '/writer/login',
-            component: Login
-          },
-          {
-            component: RedirectToPageNotFound,
-          },
-        ]
+        component: WriterHome
       },
       {
         component: RedirectToPageNotFound,
