@@ -4,8 +4,8 @@
   "description": "Blog built with React, Node.js, Express and Webpack.",
   "main": "src/server/index.js",
   "scripts": {
-    "build": "webpack --mode production && babel ./src -d ./build --ignore */client",
-    "start": "npm run build && NODE_ENV=production node ./build/index.js",
+    "build": "webpack --mode production && babel ./src -d ./build",
+    "start": "npm run build && NODE_ENV=production node ./build/server/index.js",
     "client": "webpack --mode development --config ./webpack.config.js/ --watch",
     "server": "nodemon --exec babel-node src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
