@@ -7,8 +7,11 @@ import routes from '../../routes';
 
 const theme = createMuiTheme({
   palette: {
-    background: {
-      default: '#131415',
+    type: 'dark',
+    primary: {
+      light: '#a6d4fa',
+      main: '#90caf9',
+      dark: '#648dae',
     }
   }
 });
