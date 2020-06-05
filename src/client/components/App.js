@@ -12,6 +12,10 @@ const theme = createMuiTheme({
       light: '#a6d4fa',
       main: '#90caf9',
       dark: '#648dae',
+    },
+    background: {
+      paper: '343638',
+      default: '131415',
     }
   }
 });
