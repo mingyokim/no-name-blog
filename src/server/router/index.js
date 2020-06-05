@@ -2,18 +2,24 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 import routes from '../../routes';
 import App from '../../client/components/App';
 
-const renderHTML = app => `
+const renderFullPage = (app, css) => `
 <!doctype html>
 <html lang="en">
 
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="viewport"
+      content="minimum-scale=1, initial-scale=1, width=device-width"
+    />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bloggo</title>
+    <style id="jss-server-side">${css}</style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
   </head>
 
   <body>
@@ -26,6 +32,7 @@ const renderHTML = app => `
 
 export default function renderRoute(req, res) {
   console.log('rendering', req.url, 'from server');
+  const sheets = new ServerStyleSheets();
   const branch = matchRoutes(routes, req.url);
   const promises = [];
 
@@ -37,18 +44,18 @@ export default function renderRoute(req, res) {
 
   Promise.all(promises).then((data) => {
     // data will be an array[] of datas returned by each promises.
-    // // console.log(data)
 
     const context = data.reduce((c, d) => Object.assign(c, d), {});
 
-    const router = <StaticRouter location={req.url} context={context}><App /></StaticRouter>;
+    const html = renderToString(
+      sheets.collect(
+        <StaticRouter location={req.url} context={context}><App /></StaticRouter>
+      ),
+    );
 
-    const app = renderToString(router);
+    // Grab the CSS from the sheets.
+    const css = sheets.toString();
 
-    const html = renderHTML(app);
-
-    // console.log(chalk.green(`<!DOCTYPE html>${html}`));
-
-    return res.status(200).send(html);
+    return res.send(renderFullPage(html, css));
   });
 }

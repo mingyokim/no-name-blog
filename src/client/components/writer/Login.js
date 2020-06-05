@@ -1,7 +1,11 @@
 import React from 'react';
+import { TextField } from '@material-ui/core';
 
 const Login = () => (
-  <h2>Login</h2>
+  <>
+    <TextField label="Email" variant="outlined" />
+    <TextField label="Password" variant="outlined" />
+  </>
 );
 
 export default Login;
