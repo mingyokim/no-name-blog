@@ -1,4 +1,3 @@
-import path from 'path';
 import router from './router';
 
 require('dotenv').config();
