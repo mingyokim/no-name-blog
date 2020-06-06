@@ -17,9 +17,11 @@ const renderFullPage = (app, css) => `
       content="minimum-scale=1, initial-scale=1, width=device-width"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="772543796000-a6b7e276bb2gk0ur38rsloua99a9kf54.apps.googleusercontent.com">
     <title>Bloggo</title>
     <style id="jss-server-side">${css}</style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
 
   <body>
