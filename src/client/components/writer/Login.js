@@ -7,6 +7,7 @@ import { compose } from 'redux';
 import * as fb from 'firebase/app';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { FirebaseContext } from '../firebase';
 
 // const Login = () => {
 //   const provider = new fb.auth.GoogleAuthProvider();
@@ -42,19 +43,23 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sessionCreated: false,
+      sessionCreated: false
     };
   }
 
-  signInWithProvider = () => {
-    const { firebase } = this.props;
+  signInWithProvider = (firebase) => {
+    // const { firebase } = this.props;
+    console.log('firebase:', firebase);
     const provider = new fb.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then((result) => {
       console.log('Result after sign in: ', result);
-      const { idToken } = result.credential;
-      axios.post('/sessionLogin', { idToken }).then((res) => {
-        console.log('session login success:', res);
-        this.setState({ sessionCreated: true });
+      firebase.auth().currentUser.getIdToken(true).then((idToken) => {
+        axios.post('/sessionLogin', { idToken }).then((res) => {
+          console.log('session login success:', res);
+          this.setState({ sessionCreated: true });
+        }).catch((err) => {
+          console.log(err);
+        });
       }).catch((err) => {
         console.log(err);
       });
@@ -64,34 +69,44 @@ class Login extends React.Component {
   }
 
   render() {
-    const {
-      auth: {
-        isLoaded: isAuthLoaded,
-        isEmpty: needLogin,
-      },
-    } = this.props;
+    // const {
+    //   auth: {
+    //     isLoaded: isAuthLoaded,
+    //     isEmpty: needLogin,
+    //   },
+    // } = this.props;
 
     const { sessionCreated } = this.state;
 
     if (sessionCreated) {
       return (<Redirect to="/writer" />);
     }
-    // console.log(auth);
-    if (!isAuthLoaded) return (<span>Loading...</span>);
-
-    if (needLogin) {
-      return (
-        <>
-          <TextField label="Email" variant="outlined" />
-          <TextField label="Password" variant="outlined" />
-          <button type="submit" onClick={this.signInWithProvider}>Sign in with Google</button>
-        </>
-      );
-    }
 
     return (
-      <Redirect to="/writer" />
+      <>
+        <TextField label="Email" variant="outlined" />
+        <TextField label="Password" variant="outlined" />
+        <FirebaseContext.Consumer>
+          {firebase => <button type="submit" onClick={() => this.signInWithProvider(firebase)}>Sign in with Google</button>}
+        </FirebaseContext.Consumer>
+      </>
     );
+    // console.log(auth);
+    // if (!isAuthLoaded) return (<span>Loading...</span>);
+
+    // if (needLogin) {
+    //   return (
+    //     <>
+    //       <TextField label="Email" variant="outlined" />
+    //       <TextField label="Password" variant="outlined" />
+    //       <button type="submit" onClick={this.signInWithProvider}>Sign in with Google</button>
+    //     </>
+    //   );
+    // }
+
+    // return (
+    //   <Redirect to="/writer" />
+    // );
   }
 }
 
@@ -131,15 +146,15 @@ class Login extends React.Component {
 //   );
 // };
 
-Login.propTypes = {
-  firebase: PropTypes.shape({
-    auth: PropTypes.func,
-  }).isRequired,
-  auth: PropTypes.shape({
-    isLoaded: PropTypes.bool,
-    isEmpty: PropTypes.bool,
-  }).isRequired,
-};
+// Login.propTypes = {
+//   firebase: PropTypes.shape({
+//     auth: PropTypes.func,
+//   }).isRequired,
+//   // auth: PropTypes.shape({
+//   //   isLoaded: PropTypes.bool,
+//   //   isEmpty: PropTypes.bool,
+//   // }).isRequired,
+// };
 
 // const enhance = connect(
 //   // Map redux state to component props
@@ -153,9 +168,11 @@ Login.propTypes = {
 
 // export default Login;
 
-const mapStateToProps = ({ firebase: { auth } }) => ({ auth });
+// const mapStateToProps = ({ firebase }) => ({ firebase });
 
-export default compose(
-  firebaseConnect(),
-  connect(mapStateToProps),
-)(Login);
+// export default compose(
+//   firebaseConnect(),
+//   connect(mapStateToProps),
+// )(Login);
+
+export default Login;

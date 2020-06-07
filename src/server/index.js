@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/login', (req, res) => {
-  console.log('cookie: ', req.cookies);
+  // console.log('cookie: ', req.cookies);
   const sessionCookie = req.cookies.session || '';
   // Verify the session cookie. In this case an additional check is added to detect
   // if the user's Firebase session was revoked, user deleted/disabled, etc.
@@ -38,13 +38,14 @@ app.get('/login', (req, res) => {
       res.redirect('/writer');
     })
     .catch(() => {
-      // Session cookie is unavailable or invalid. Force user to login.
       router(req, res);
     });
 });
 
 app.get('/logout', (req, res) => {
   const sessionCookie = req.cookies.session || '';
+  // console.log('logout session cookie:', sessionCookie);
+  // console.log('cookies:', req.cookies);
   res.clearCookie('session');
   admin.auth().verifySessionCookie(sessionCookie)
     .then(decodedClaims => admin.auth().revokeRefreshTokens(decodedClaims.sub))
@@ -57,12 +58,12 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/sessionLogin', (req, res) => {
-  console.log('server session login');
-  console.log('body:', req.body);
-  console.log('cookies:', req.body.cookies);
+  // console.log('server session login');
+  // console.log('body:', req.body);
+  // console.log('cookies:', req.body.cookies);
   // Get the ID token passed and the CSRF token.
   const idToken = req.body.idToken.toString();
-  console.log('id token:', idToken);
+  // console.log('id token:', idToken);
   // const csrfToken = req.body.csrfToken.toString();
   // // Guard against CSRF attacks.
   // if (csrfToken !== req.cookies.csrfToken) {
@@ -77,8 +78,10 @@ app.post('/sessionLogin', (req, res) => {
   // can be checked to ensure user was recently signed in before creating a session cookie.
   admin.auth().createSessionCookie(idToken, { expiresIn })
     .then((sessionCookie) => {
+      // console.log('session cookie:', sessionCookie);
       // Set cookie policy for session cookie.
-      const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+      // const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+      const options = { maxAge: expiresIn };
       res.cookie('session', sessionCookie, options);
       res.end(JSON.stringify({ status: 'success' }));
     }, (err) => {

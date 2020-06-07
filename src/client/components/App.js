@@ -3,12 +3,13 @@ import { renderRoutes } from 'react-router-config';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Provider } from 'react-redux';
-import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
-import { store, rrfProps } from './store';
-// import * as firebase from 'firebase/app';
-// import 'firebase/auth';
+// import { Provider } from 'react-redux';
+// import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+// import { store, rrfProps } from './store';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import routes from '../../routes';
+import { FirebaseContext, firebaseConfig } from './firebase';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,17 +35,27 @@ const theme = createMuiTheme({
 //   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
 // };
 
-// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <ReactReduxFirebaseProvider {...rrfProps}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {renderRoutes(routes)}
-        </ThemeProvider>
-      </ReactReduxFirebaseProvider>
-    </Provider>
+    <FirebaseContext.Provider value={firebase}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {renderRoutes(routes)}
+      </ThemeProvider>
+    </FirebaseContext.Provider>
   );
+  // return (
+  //   <Provider store={store}>
+  //     <ReactReduxFirebaseProvider {...rrfProps}>
+  //       <FirebaseContext.Provider>
+  //         <ThemeProvider theme={theme}>
+  //           <CssBaseline />
+  //           {renderRoutes(routes)}
+  //         </ThemeProvider>
+  //       </FirebaseContext.Provider>
+  //     </ReactReduxFirebaseProvider>
+  //   </Provider>
+  // );
 }
