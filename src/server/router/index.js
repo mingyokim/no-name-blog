@@ -55,6 +55,13 @@ export default function renderRoute(req, res) {
       ),
     );
 
+    if (context.url) {
+      // Somewhere a `<Redirect>` was rendered
+      console.log('Found a redirect to:', context.url);
+      return res.redirect(301, context.url);
+    }
+    // we're good, send the response
+
     // Grab the CSS from the sheets.
     const css = sheets.toString();
 
