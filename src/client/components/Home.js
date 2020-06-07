@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Toggle extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class Toggle extends React.Component {
 const Home = () => (
   <>
     <h2>Home</h2>
+    <Link to="writer">Go to writer</Link>
     <Toggle />
   </>
 );
