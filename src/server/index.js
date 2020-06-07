@@ -57,6 +57,20 @@ app.get('/logout', (req, res) => {
     });
 });
 
+app.get(['/writer', '/writer*'], (req, res) => {
+  const sessionCookie = req.cookies.session || '';
+  // Verify the session cookie. In this case an additional check is added to detect
+  // if the user's Firebase session was revoked, user deleted/disabled, etc.
+  admin.auth().verifySessionCookie(sessionCookie, true)
+    .then(() => {
+      router(req, res);
+    })
+    .catch(() => {
+      // Session cookie is unavailable or invalid. Force user to login.
+      res.redirect('/login');
+    });
+});
+
 app.post('/sessionLogin', (req, res) => {
   // console.log('server session login');
   // console.log('body:', req.body);
