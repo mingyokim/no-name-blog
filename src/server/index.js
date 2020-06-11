@@ -28,6 +28,10 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.get('/', (req, res) => {
+
+});
+
 app.get('/login', (req, res) => {
   // console.log('cookie: ', req.cookies);
   const sessionCookie = req.cookies.session || '';

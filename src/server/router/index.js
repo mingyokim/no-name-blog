@@ -6,7 +6,7 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 import routes from '../../routes';
 import App from '../../client/components/App';
 
-const renderFullPage = (app, css) => `
+const renderFullPage = (app, css, preloadedState) => `
 <!doctype html>
 <html lang="en">
 
@@ -27,6 +27,14 @@ const renderFullPage = (app, css) => `
   <body>
     <div id="root">${app}</div>
     <script src="/bundle.js"></script>
+    <script>
+      // WARNING: See the following for security issues around embedding JSON in HTML:
+      // https://redux.js.org/recipes/server-rendering/#security-considerations
+      window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(
+    /</g,
+    '\\u003c'
+  )}
+    </script>
   </body>
 
 </html>

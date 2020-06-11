@@ -1,9 +1,9 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
-import PropTypes from 'prop-types';
-import { compose } from 'redux';
+// import { connect } from 'react-redux';
+// import { firebaseConnect } from 'react-redux-firebase';
+// import PropTypes from 'prop-types';
+// import { compose } from 'redux';
 import * as fb from 'firebase/app';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
