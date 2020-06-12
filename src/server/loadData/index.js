@@ -8,6 +8,7 @@ const loadBlogs = (admin) => {
         console.log(doc.id, '=>', doc.data());
         return {
           id: doc.id,
+          ...doc.data(),
         };
       });
       resolve({
