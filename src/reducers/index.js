@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { ADD_BLOGS } from '../actions';
 
-const blogs = (state = [], action) => {
+const partialBlogs = (state = [], action) => {
   const { type } = action;
   switch (type) {
     case ADD_BLOGS:
@@ -15,7 +15,7 @@ const blogs = (state = [], action) => {
 };
 
 const blogApp = combineReducers({
-  blogs,
+  partialBlogs,
 });
 
 export default blogApp;

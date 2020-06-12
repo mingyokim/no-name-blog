@@ -1,10 +1,16 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { matchRoutes } from 'react-router-config';
+import { StaticRouter, matchPath } from 'react-router-dom';
+// import { matchRoutes } from 'react-router-config';
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import routes from '../../routes';
+import serialize from 'serialize-javascript';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import rootRoutes from '../../routes';
 import App from '../../client/components/App';
+import blogApp from '../../reducers';
+
+const admin = require('firebase-admin');
 
 const renderFullPage = (app, css, preloadedState) => `
 <!doctype html>
@@ -26,15 +32,12 @@ const renderFullPage = (app, css, preloadedState) => `
 
   <body>
     <div id="root">${app}</div>
-    <script src="/bundle.js"></script>
     <script>
       // WARNING: See the following for security issues around embedding JSON in HTML:
       // https://redux.js.org/recipes/server-rendering/#security-considerations
-      window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(
-    /</g,
-    '\\u003c'
-  )}
+      window.__PRELOADED_STATE__ = ${serialize(preloadedState)}
     </script>
+    <script src="/bundle.js"></script>
   </body>
 
 </html>
@@ -43,23 +46,29 @@ const renderFullPage = (app, css, preloadedState) => `
 export default function renderRoute(req, res) {
   console.log('rendering', req.url, 'from server');
   const sheets = new ServerStyleSheets();
-  const branch = matchRoutes(routes, req.url);
-  const promises = [];
+  const rootRoute = rootRoutes[0];
+  const { routes } = rootRoute;
+  const currentRoute = routes.find(route => matchPath(req.url, route)) || {};
+  let promise = {};
 
-  branch.forEach(({ route, match }) => {
-    if (route.loadData) {
-      promises.push(route.loadData(match));
-    }
-  });
+  // console.log('current route:', currentRoute);
 
-  Promise.all(promises).then((data) => {
-    // data will be an array[] of datas returned by each promises.
+  if (currentRoute.loadData) {
+    promise = currentRoute.loadData(admin);
+  } else {
+    promise = Promise.resolve({});
+  }
 
-    const context = data.reduce((c, d) => Object.assign(c, d), {});
-
+  promise.then((preloadedState) => {
+    const context = {};
+    const store = createStore(blogApp, preloadedState);
     const html = renderToString(
       sheets.collect(
-        <StaticRouter location={req.url} context={context}><App /></StaticRouter>
+        <Provider store={store}>
+          <StaticRouter location={req.url} context={context}>
+            <App />
+          </StaticRouter>
+        </Provider>
       ),
     );
 
@@ -73,6 +82,10 @@ export default function renderRoute(req, res) {
     // Grab the CSS from the sheets.
     const css = sheets.toString();
 
-    return res.send(renderFullPage(html, css));
+    const finalState = store.getState();
+
+    console.log('preloaded state:', finalState);
+
+    return res.send(renderFullPage(html, css, finalState));
   });
 }

@@ -4,7 +4,7 @@ require('dotenv').config();
 
 // console.log('firebase config:', process.env.FIREBASE_CONFIG);
 const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
-console.log('service account:', serviceAccount);
+// console.log('service account:', serviceAccount);
 
 // Initialize the default app
 const admin = require('firebase-admin');
@@ -28,9 +28,9 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.get('/', (req, res) => {
+// app.get('/', (req, res) => {
 
-});
+// });
 
 app.get('/login', (req, res) => {
   // console.log('cookie: ', req.cookies);

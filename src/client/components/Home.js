@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Toggle extends React.Component {
   constructor(props) {
@@ -32,12 +33,30 @@ class Toggle extends React.Component {
   }
 }
 
-const Home = () => (
-  <>
-    <h2>Home</h2>
-    <Link to="writer">Go to writer</Link>
-    <Toggle />
-  </>
-);
+// const Home = () => (
+//   <>
+//     <h2>Home</h2>
+//     <Link to="writer">Go to writer</Link>
+//     <Toggle />
+//   </>
+// );
 
-export default Home;
+class Home extends React.Component {
+  render() {
+    const { partialBlogs } = this.props;
+    return (
+      <>
+        <h2>Home</h2>
+        <Link to="writer">Go to writer</Link>
+        <Toggle />
+        <p>{partialBlogs[0].id}</p>
+      </>
+    );
+  }
+}
+
+const mapStateToProps = ({ partialBlogs }) => ({
+  partialBlogs
+});
+
+export default connect(mapStateToProps)(Home);
