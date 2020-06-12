@@ -23,7 +23,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 app.use(express.static('dist'));
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 // Support URL-encoded bodies.

@@ -1,12 +1,19 @@
 const path = require('path');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 const outputDirectory = 'dist';
 
 module.exports = {
-  entry: ['babel-polyfill', './src/client/index.js'],
+  // entry: ['babel-polyfill', './src/client/index.js'],
+  context: path.join(__dirname, 'src'),
+  devtool: process.env.NODE_ENV === 'production' ? 'none' : 'source-map',
+  entry: {
+    client: './client/index.js',
+  },
   output: {
     path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
+    // filename: 'bundle.js'
   },
   module: {
     rules: [{
@@ -26,6 +33,11 @@ module.exports = {
     }]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx']
-  }
+    extensions: ['*', '.js', '.jsx'],
+    modules: [
+      path.resolve('./src'),
+      'node_modules',
+    ],
+  },
+  plugins: [new LoadablePlugin()],
 };
