@@ -49,7 +49,7 @@ class Home extends React.Component {
         <h2>Home</h2>
         <Link to="writer">Go to writer</Link>
         <Toggle />
-        <p>{partialBlogs[0].id}</p>
+        {partialBlogs.map(({ id }) => (<p key={id}>{id}</p>))}
       </>
     );
   }
