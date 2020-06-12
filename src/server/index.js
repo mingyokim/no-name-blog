@@ -1,6 +1,8 @@
 import router from './router';
 
 require('dotenv').config();
+const favicon = require('serve-favicon');
+const path = require('path');
 
 // console.log('firebase config:', process.env.FIREBASE_CONFIG);
 const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
@@ -21,6 +23,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 app.use(express.static('dist'));
+app.use('/public', express.static('public'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 // Support URL-encoded bodies.
