@@ -1,15 +1,16 @@
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import loadable from '@loadable/component';
+
 // import { Provider } from 'react-redux';
 // import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 // import { store, rrfProps } from './store';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+// import * as firebase from 'firebase/app';
 import routes from '../../routes';
-import { FirebaseContext, firebaseConfig } from './firebase';
+// import { FirebaseContext, firebaseConfig } from './firebase';
+const FirebaseProvider = loadable(() => import('./firebase/FirebaseProvider'));
 
 const theme = createMuiTheme({
   palette: {
@@ -35,27 +36,38 @@ const theme = createMuiTheme({
 //   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
 // };
 
-firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseConfig);
 
-export default function App() {
-  return (
-    <FirebaseContext.Provider value={firebase}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {renderRoutes(routes)}
-      </ThemeProvider>
-    </FirebaseContext.Provider>
-  );
-  // return (
-  //   <Provider store={store}>
-  //     <ReactReduxFirebaseProvider {...rrfProps}>
-  //       <FirebaseContext.Provider>
-  //         <ThemeProvider theme={theme}>
-  //           <CssBaseline />
-  //           {renderRoutes(routes)}
-  //         </ThemeProvider>
-  //       </FirebaseContext.Provider>
-  //     </ReactReduxFirebaseProvider>
-  //   </Provider>
-  // );
-}
+// export default function App() {
+//   return (
+//     <FirebaseContext.Provider value={firebase}>
+//       <ThemeProvider theme={theme}>
+//         <CssBaseline />
+//         {renderRoutes(routes)}
+//       </ThemeProvider>
+//     </FirebaseContext.Provider>
+//   );
+//   // return (
+//   //   <Provider store={store}>
+//   //     <ReactReduxFirebaseProvider {...rrfProps}>
+//   //       <FirebaseContext.Provider>
+//   //         <ThemeProvider theme={theme}>
+//   //           <CssBaseline />
+//   //           {renderRoutes(routes)}
+//   //         </ThemeProvider>
+//   //       </FirebaseContext.Provider>
+//   //     </ReactReduxFirebaseProvider>
+//   //   </Provider>
+//   // );
+// }
+
+const App = () => (
+  <FirebaseProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {renderRoutes(routes)}
+    </ThemeProvider>
+  </FirebaseProvider>
+);
+
+export default App;
