@@ -1,7 +1,17 @@
 const path = require('path');
 const LoadablePlugin = require('@loadable/webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const outputDirectory = 'dist';
+
+const plugins = [new LoadablePlugin()];
+if (process.env.NODE_ENV === 'development') {
+  plugins.push(new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    reportFilename: 'webpack-report.html',
+    openAnalyzer: true,
+  }));
+}
 
 module.exports = {
   // entry: ['babel-polyfill', './src/client/index.js'],
@@ -39,5 +49,5 @@ module.exports = {
       'node_modules',
     ],
   },
-  plugins: [new LoadablePlugin()],
+  plugins,
 };

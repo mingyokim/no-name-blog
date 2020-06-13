@@ -1,9 +1,15 @@
+import loadable from '@loadable/component';
+
 import Root from '../client/components/Root';
-import Home from '../client/components/Home';
-import { PageNotFound, RedirectToPageNotFound } from '../client/components/PageNotFound';
-import WriterHome from '../client/components/writer/WriterHome';
-import Login from '../client/components/writer/Login';
+// import { PageNotFound, RedirectToPageNotFound } from '../client/components/PageNotFound';
+// import WriterHome from '../client/components/writer/WriterHome';
+// import Login from '../client/components/writer/Login';
 import { loadBlogs } from '../server/loadData';
+// import Home from '../client/components/Home';
+const Home = loadable(() => import('../client/components/Home'));
+const { PageNotFound, RedirectToPageNotFound } = loadable(() => import('../client/components/PageNotFound'));
+const WriterHome = loadable(() => import('../client/components/writer/WriterHome'));
+const Login = loadable(() => import('../client/components/writer/Login'));
 
 const routes = [
   {
