@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
   plugins.push(new BundleAnalyzerPlugin({
     analyzerMode: 'static',
     reportFilename: 'webpack-report.html',
-    openAnalyzer: true,
+    openAnalyzer: false,
   }));
 }
 

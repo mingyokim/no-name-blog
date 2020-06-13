@@ -7,9 +7,10 @@ import Root from '../client/components/Root';
 import { loadBlogs } from '../server/loadData';
 // import Home from '../client/components/Home';
 const Home = loadable(() => import('../client/components/Home'));
-const { PageNotFound, RedirectToPageNotFound } = loadable(() => import('../client/components/PageNotFound'));
+const PageNotFound = loadable(() => import('../client/components/PageNotFound'));
 const WriterHome = loadable(() => import('../client/components/writer/WriterHome'));
 const Login = loadable(() => import('../client/components/writer/Login'));
+const RedirectToPageNotFound = loadable(() => import('../client/components/RedirectToPageNotFound'));
 
 const routes = [
   {
