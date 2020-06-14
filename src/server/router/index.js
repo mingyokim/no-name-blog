@@ -56,8 +56,8 @@ export default function renderRoute(req, res) {
 
   // console.log('current route:', currentRoute);
 
-  if (currentRoute.loadData) {
-    promise = currentRoute.loadData(admin);
+  if (currentRoute.loadDataFromServer) {
+    promise = currentRoute.loadDataFromServer(admin);
   } else {
     promise = Promise.resolve({});
   }

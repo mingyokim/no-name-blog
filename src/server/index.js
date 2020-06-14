@@ -31,9 +31,22 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// app.get('/', (req, res) => {
-
-// });
+app.get('/api/v1/partial-blogs', (req, res) => {
+  const db = admin.firestore();
+  db.collection('blogs_partial').get().then((snapshot) => {
+    const partialBlogs = snapshot.docs.map((doc) => {
+      console.log(doc.id, '=>', doc.data());
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    });
+    res.send({ partialBlogs });
+  }).catch((err) => {
+    console.log(err);
+    res.status(404).send('server error');
+  });
+});
 
 app.get('/login', (req, res) => {
   // console.log('cookie: ', req.cookies);

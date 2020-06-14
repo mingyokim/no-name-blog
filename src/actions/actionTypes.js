@@ -1,0 +1,5 @@
+const ADD_PARTIAL_BLOGS = 'ADD_PARTIAL_BLOGS';
+
+export {
+  ADD_PARTIAL_BLOGS
+};

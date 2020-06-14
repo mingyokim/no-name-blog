@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios';
+
+import addPartialBlogsAction from '../../actions/addPartialBlogs';
 
 class Toggle extends React.Component {
   constructor(props) {
@@ -42,14 +45,36 @@ class Toggle extends React.Component {
 // );
 
 class Home extends React.Component {
+  componentDidMount() {
+    const {
+      partialBlogs,
+      partialBlogs: {
+        loaded
+      },
+      addPartialBlogs
+    } = this.props;
+
+    if (!loaded) {
+      axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs: newPartialBLogs } }) => {
+        addPartialBlogs(newPartialBLogs);
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+
   render() {
-    const { partialBlogs } = this.props;
+    const {
+      partialBlogs: {
+        data
+      }
+    } = this.props;
     return (
       <>
         <h2>Home</h2>
         <Link to="writer">Go to writer</Link>
         <Toggle />
-        {partialBlogs.map(({ id }) => (<p key={id}>{id}</p>))}
+        {data.map(({ id }) => (<p key={id}>{id}</p>))}
       </>
     );
   }
@@ -59,4 +84,8 @@ const mapStateToProps = ({ partialBlogs }) => ({
   partialBlogs
 });
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = dispatch => ({
+  addPartialBlogs: partialBlogs => dispatch(addPartialBlogsAction(partialBlogs)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

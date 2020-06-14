@@ -1,5 +1,5 @@
-const ADD_BLOGS = 'ADD_BLOGS';
+import addPartialBlogs from './addPartialBlogs';
 
 export {
-  ADD_BLOGS
+  addPartialBlogs,
 };

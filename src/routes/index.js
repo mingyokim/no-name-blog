@@ -4,7 +4,7 @@ import Root from '../client/components/Root';
 // import { PageNotFound, RedirectToPageNotFound } from '../client/components/PageNotFound';
 // import WriterHome from '../client/components/writer/WriterHome';
 // import Login from '../client/components/writer/Login';
-import { loadBlogs } from '../server/loadData';
+// import { loadBlogs } from '../server/loadData';
 // import Home from '../client/components/Home';
 const Home = loadable(() => import('../client/components/Home'));
 const PageNotFound = loadable(() => import('../client/components/PageNotFound'));
@@ -20,7 +20,7 @@ const routes = [
         path: '/',
         exact: true,
         component: Home,
-        loadData: loadBlogs,
+        // loadDataFromClient: loadBlogs,
       },
       {
         path: '/page-not-found',
