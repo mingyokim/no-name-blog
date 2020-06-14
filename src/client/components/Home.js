@@ -1,91 +1,96 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import axios from 'axios';
+import Grid from '@material-ui/core/Grid';
 
-import addPartialBlogsAction from '../../actions/addPartialBlogs';
-
-class Toggle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { on: false };
-  }
-
-  render() {
-    const { on } = this.state;
-
-    const toggle = () => {
-      // const { on } = this.state;
-      this.setState({ on: !on });
-    };
-
-    if (on) {
-      return (
-        <>
-          <button onClick={toggle}>Button</button>
-          <p>on</p>
-        </>
-      );
-    }
-    return (
-      <>
-        <button onClick={toggle}>Button</button>
-        <p>off</p>
-      </>
-    );
-  }
-}
+const Home = () => (
+  <Grid container spacing={3} direction="column">
+    <Grid item xs={12}>
+      <Grid container spacing={3}>
+        <Grid item xs={3} />
+        <Grid item xs={9}>
+          <p>Blog</p>
+        </Grid>
+      </Grid>
+    </Grid>
+    <Grid item xs={12}>
+      <Grid container spacing={3}>
+        <Grid item xs={3}>
+          <p>Authors</p>
+        </Grid>
+        <Grid item xs={9}>
+          <p>Blogs</p>
+        </Grid>
+      </Grid>
+    </Grid>
+  </Grid>
+);
 
 // const Home = () => (
-//   <>
-//     <h2>Home</h2>
-//     <Link to="writer">Go to writer</Link>
-//     <Toggle />
-//   </>
+//   <Grid container spacing={3}>
+//     <Grid item xs={3}>
+//       <Grid container spacing={3} direction="column">
+//         <Grid item xs={3} />
+//         <Grid item xs={9}>
+//           <p>Authors</p>
+//         </Grid>
+//       </Grid>
+//     </Grid>
+//     <Grid item xs={9}>
+//       <Grid container spacing={3} direction="column">
+//         <Grid item xs={3}>
+//           <p>Blog</p>
+//         </Grid>
+//         <Grid item xs={9}>
+//           <p>Blogs</p>
+//         </Grid>
+//       </Grid>
+//     </Grid>
+//   </Grid>
 // );
 
-class Home extends React.Component {
-  componentDidMount() {
-    const {
-      partialBlogs,
-      partialBlogs: {
-        loaded
-      },
-      addPartialBlogs
-    } = this.props;
+export default Home;
 
-    if (!loaded) {
-      axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs: newPartialBLogs } }) => {
-        addPartialBlogs(newPartialBLogs);
-      }).catch((err) => {
-        console.log(err);
-      });
-    }
-  }
+// class Home extends React.Component {
+//   componentDidMount() {
+//     const {
+//       partialBlogs,
+//       partialBlogs: {
+//         loaded
+//       },
+//       addPartialBlogs
+//     } = this.props;
 
-  render() {
-    const {
-      partialBlogs: {
-        data
-      }
-    } = this.props;
-    return (
-      <>
-        <h2>Home</h2>
-        <Link to="writer">Go to writer</Link>
-        <Toggle />
-        {data.map(({ id }) => (<p key={id}>{id}</p>))}
-      </>
-    );
-  }
-}
+//     if (!loaded) {
+//       axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs: newPartialBLogs } }) => {
+//         addPartialBlogs(newPartialBLogs);
+//       }).catch((err) => {
+//         console.log(err);
+//       });
+//     }
+//   }
 
-const mapStateToProps = ({ partialBlogs }) => ({
-  partialBlogs
-});
+//   render() {
+//     const {
+//       partialBlogs: {
+//         data
+//       }
+//     } = this.props;
+//     return (
+//       <>
+//         <h2>Home</h2>
+//         <Link to="writer">Go to writer</Link>
+//         <Toggle />
+//         {data.map(({ id }) => (<p key={id}>{id}</p>))}
+//       </>
+//     );
+//   }
+// }
 
-const mapDispatchToProps = dispatch => ({
-  addPartialBlogs: partialBlogs => dispatch(addPartialBlogsAction(partialBlogs)),
-});
+// const mapStateToProps = ({ partialBlogs }) => ({
+//   partialBlogs
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+// const mapDispatchToProps = dispatch => ({
+//   addPartialBlogs: partialBlogs => dispatch(addPartialBlogsAction(partialBlogs)),
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Home);
