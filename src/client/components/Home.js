@@ -1,5 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import AuthorsList from '../containers/author/AuthorsList';
 
 const Home = () => (
   <Grid container spacing={3} direction="column">
@@ -14,7 +15,7 @@ const Home = () => (
     <Grid item xs={12}>
       <Grid container spacing={3}>
         <Grid item xs={3}>
-          <p>Authors</p>
+          <AuthorsList />
         </Grid>
         <Grid item xs={9}>
           <p>Blogs</p>

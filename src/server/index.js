@@ -48,6 +48,23 @@ app.get('/api/v1/partial-blogs', (req, res) => {
   });
 });
 
+app.get('/api/v1/authors', (req, res) => {
+  admin.auth().listUsers().then((listUsersResult) => {
+    const authors = listUsersResult.users.map((user) => {
+      console.log(user.toJSON());
+      return {
+        id: user.uid,
+        display_name: user.displayName,
+        photo_URL: user.photoURL,
+      };
+    });
+    res.send({ authors });
+  }).catch((err) => {
+    console.log(err);
+    res.status(404).send('server error');
+  });
+});
+
 app.get('/login', (req, res) => {
   // console.log('cookie: ', req.cookies);
   const sessionCookie = req.cookies.session || '';
