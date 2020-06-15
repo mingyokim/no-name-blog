@@ -33,19 +33,22 @@ app.use(bodyParser.urlencoded({
 
 app.get('/api/v1/partial-blogs', (req, res) => {
   const db = admin.firestore();
-  db.collection('blogs_partial').get().then((snapshot) => {
+  db.collection('blogs_partial').orderBy('createdAt', 'desc').get().then((snapshot) => {
     const partialBlogs = snapshot.docs.map((doc) => {
       console.log(doc.id, '=>', doc.data());
+      const data = doc.data();
+      data.createdAt = data.createdAt.toDate().toJSON();
       return {
         id: doc.id,
-        ...doc.data(),
+        ...data,
       };
     });
     res.send({ partialBlogs });
-  }).catch((err) => {
-    console.log(err);
-    res.status(404).send('server error');
-  });
+  })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send('server error');
+    });
 });
 
 app.get('/api/v1/authors', (req, res) => {
