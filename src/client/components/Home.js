@@ -7,7 +7,7 @@ const Home = () => (
       <Grid container spacing={3}>
         <Grid item xs={3} />
         <Grid item xs={9}>
-          <p>Blog</p>
+          <p>Bloggo</p>
         </Grid>
       </Grid>
     </Grid>
