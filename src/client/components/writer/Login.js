@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import * as fb from 'firebase/app';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { FirebaseContext } from '../firebase';
+import { FirebaseContext } from '../../firebase';
 
 // const Login = () => {
 //   const provider = new fb.auth.GoogleAuthProvider();

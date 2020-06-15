@@ -10,7 +10,7 @@ import loadable from '@loadable/component';
 // import * as firebase from 'firebase/app';
 import routes from '../../routes';
 // import { FirebaseContext, firebaseConfig } from './firebase';
-const FirebaseProvider = loadable(() => import('./firebase/FirebaseProvider'));
+const FirebaseProvider = loadable(() => import('../firebase/FirebaseProvider'));
 
 const theme = createMuiTheme({
   palette: {
