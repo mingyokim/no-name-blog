@@ -3,6 +3,8 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import initAuthorsAction from '../../../actions/authors/initAuthors';
+import clearAuthorFilterAction from '../../../actions/authorFilter/clearAuthorFilter';
+import updateAuthorFilterAction from '../../../actions/authorFilter/updateAuthorFilter';
 import AuthorsListComponent from '../../components/author/AuthorsList';
 
 class AuthorsList extends React.Component {
@@ -29,10 +31,21 @@ class AuthorsList extends React.Component {
         loaded,
         data: authors
       },
+      authorFilter: {
+        userId,
+      },
+      clearAuthorFilter,
+      updateAuthorFilter,
     } = this.props;
 
     return (
-      <AuthorsListComponent loaded={loaded} authors={authors} />
+      <AuthorsListComponent
+        loaded={loaded}
+        authors={authors}
+        filterUserId={userId}
+        clearFilter={clearAuthorFilter}
+        updateFilter={updateAuthorFilter}
+      />
     );
   }
 }
@@ -46,15 +59,24 @@ AuthorsList.propTypes = {
       photo_URL: PropTypes.string,
     })),
   }).isRequired,
+  authorFilter: PropTypes.shape({
+    isFilterOn: PropTypes.bool,
+    userId: PropTypes.string,
+  }).isRequired,
   initAuthors: PropTypes.func.isRequired,
+  clearAuthorFilter: PropTypes.func.isRequired,
+  updateAuthorFilter: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ authors }) => ({
-  authors
+const mapStateToProps = ({ authors, authorFilter }) => ({
+  authors,
+  authorFilter
 });
 
 const mapDispatchToProps = dispatch => ({
   initAuthors: authors => dispatch(initAuthorsAction(authors)),
+  clearAuthorFilter: () => dispatch(clearAuthorFilterAction()),
+  updateAuthorFilter: userId => dispatch(updateAuthorFilterAction(userId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthorsList);

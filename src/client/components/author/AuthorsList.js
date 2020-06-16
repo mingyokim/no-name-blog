@@ -17,27 +17,40 @@ const useStyles = makeStyles({
   }
 });
 
-const Author = ({ loading, displayName, photoURL }) => {
+const AuthorLoading = () => {
   const classes = useStyles();
-  if (loading) {
-    return (
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <Skeleton variant="circle" width={24} height={24} />
-        </Grid>
-        <Grid item sm={8}>
-          <Skeleton height={32} className={classes.nameSkeleton} />
-        </Grid>
+  return (
+    <Grid container spacing={2} alignItems="center">
+      <Grid item>
+        <Skeleton variant="circle" width={24} height={24} />
       </Grid>
+      <Grid item sm={8}>
+        <Skeleton height={32} className={classes.nameSkeleton} />
+      </Grid>
+    </Grid>
+  );
+};
+
+const Author = ({
+  displayName, photoURL, isFilterOn, userId, clearFilter, updateFilter
+}) => {
+  if (isFilterOn) {
+    return (
+      <Chip
+        variant="default"
+        label={displayName}
+        avatar={<Avatar src={photoURL} />}
+        onDelete={clearFilter}
+      />
     );
   }
-
   return (
     <Chip
       clickable
       variant="outlined"
       label={displayName}
       avatar={<Avatar src={photoURL} />}
+      onClick={() => updateFilter(userId)}
     />
   );
 };
@@ -58,17 +71,17 @@ const Author = ({ loading, displayName, photoURL }) => {
 // );
 
 Author.propTypes = {
-  displayName: PropTypes.string,
-  photoURL: PropTypes.string,
-  loading: PropTypes.bool.isRequired
+  displayName: PropTypes.string.isRequired,
+  photoURL: PropTypes.string.isRequired,
+  isFilterOn: PropTypes.bool.isRequired,
+  userId: PropTypes.string.isRequired,
+  clearFilter: PropTypes.func.isRequired,
+  updateFilter: PropTypes.func.isRequired,
 };
 
-Author.defaultProps = {
-  displayName: '',
-  photoURL: '',
-};
-
-const AuthorsList = ({ loaded, authors }) => {
+const AuthorsList = ({
+  loaded, authors, filterUserId, clearFilter, updateFilter
+}) => {
   if (loaded) {
     return (
       <Grid container spacing={2}>
@@ -78,14 +91,17 @@ const AuthorsList = ({ loaded, authors }) => {
               key={id}
               displayName={displayName}
               photoURL={photoURL}
-              loading={false}
+              isFilterOn={id === filterUserId}
+              userId={id}
+              clearFilter={clearFilter}
+              updateFilter={updateFilter}
             />
           </Grid>
         ))}
       </Grid>
     );
   }
-  return <Author loading />;
+  return <AuthorLoading />;
 };
 
 AuthorsList.propTypes = {
@@ -95,6 +111,13 @@ AuthorsList.propTypes = {
     display_name: PropTypes.string,
     photo_URL: PropTypes.string,
   })).isRequired,
+  filterUserId: PropTypes.string,
+  clearFilter: PropTypes.func.isRequired,
+  updateFilter: PropTypes.func.isRequired,
+};
+
+AuthorsList.defaultProps = {
+  filterUserId: null,
 };
 
 export default AuthorsList;

@@ -3,6 +3,8 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import addPartialBlogsAction from '../../../actions/partialBlogs/addPartialBlogs';
+import updatePartialBlogsAction from '../../../actions/partialBlogs/updatePartialBlogs';
+import loadPartialBlogsAction from '../../../actions/partialBlogs/loadPartialBlogs';
 import PartialBlogsListComponent from '../../components/blog/PartialBlogsList';
 
 class PartialBlogsList extends React.Component {
@@ -20,6 +22,44 @@ class PartialBlogsList extends React.Component {
       }).catch((err) => {
         console.log(err);
       });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      authorFilter: {
+        isFilterOn,
+        userId: newUserId,
+      },
+      updatePartialBlogs,
+      loadPartialBlogs,
+    } = this.props;
+
+    const {
+      authorFilter: {
+        userId: prevUserId,
+      }
+    } = prevProps;
+
+    if (newUserId !== prevUserId) {
+      loadPartialBlogs();
+      if (isFilterOn) {
+        axios.get('/api/v1/partial-blogs', {
+          params: {
+            author_id: newUserId,
+          }
+        }).then(({ data: { partialBlogs } }) => {
+          updatePartialBlogs(partialBlogs);
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+        axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs } }) => {
+          updatePartialBlogs(partialBlogs);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
     }
   }
 
@@ -49,14 +89,23 @@ PartialBlogsList.propTypes = {
     })),
   }).isRequired,
   addPartialBlogs: PropTypes.func.isRequired,
+  updatePartialBlogs: PropTypes.func.isRequired,
+  loadPartialBlogs: PropTypes.func.isRequired,
+  authorFilter: PropTypes.shape({
+    isFilterOn: PropTypes.bool,
+    userId: PropTypes.string,
+  }).isRequired,
 };
 
-const mapStateToProps = ({ partialBlogs }) => ({
-  partialBlogs
+const mapStateToProps = ({ partialBlogs, authorFilter }) => ({
+  partialBlogs,
+  authorFilter
 });
 
 const mapDispatchToProps = dispatch => ({
   addPartialBlogs: partialBlogs => dispatch(addPartialBlogsAction(partialBlogs)),
+  updatePartialBlogs: partialBlogs => dispatch(updatePartialBlogsAction(partialBlogs)),
+  loadPartialBlogs: () => dispatch(loadPartialBlogsAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartialBlogsList);

@@ -1,4 +1,4 @@
-import { ADD_PARTIAL_BLOGS } from '../actions/actionTypes';
+import { ADD_PARTIAL_BLOGS, UPDATE_PARTIAL_BLOGS, LOAD_PARTIAL_BLOGS } from '../actions/actionTypes';
 
 const initialPartialBlogsState = {
   loaded: false,
@@ -19,6 +19,16 @@ const partialBlogs = (state = initialPartialBlogsState, action) => {
       return {
         loaded: true,
         data: newPartialBlogs,
+      };
+    case UPDATE_PARTIAL_BLOGS:
+      return {
+        loaded: true,
+        data: newPartialBlogs,
+      };
+    case LOAD_PARTIAL_BLOGS:
+      return {
+        loaded: false,
+        data,
       };
     default:
       return state;

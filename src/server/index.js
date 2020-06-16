@@ -33,7 +33,6 @@ app.use(bodyParser.urlencoded({
 
 app.get('/api/v1/partial-blogs', (req, res) => {
   const db = admin.firestore();
-  console.log('author_id:', req.query.author_id);
   let partialBlogsRef = db.collection('blogs_partial');
   const authorId = req.query.author_id;
   if (authorId) {
