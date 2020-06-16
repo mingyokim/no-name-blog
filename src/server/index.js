@@ -33,9 +33,15 @@ app.use(bodyParser.urlencoded({
 
 app.get('/api/v1/partial-blogs', (req, res) => {
   const db = admin.firestore();
-  db.collection('blogs_partial').orderBy('createdAt', 'desc').get().then((snapshot) => {
+  console.log('author_id:', req.query.author_id);
+  let partialBlogsRef = db.collection('blogs_partial');
+  const authorId = req.query.author_id;
+  if (authorId) {
+    partialBlogsRef = partialBlogsRef.where('authorId', '=', authorId);
+  }
+  partialBlogsRef.orderBy('createdAt', 'desc').get().then((snapshot) => {
     const partialBlogs = snapshot.docs.map((doc) => {
-      console.log(doc.id, '=>', doc.data());
+      // console.log(doc.id, '=>', doc.data());
       const data = doc.data();
       data.createdAt = data.createdAt.toDate().toJSON();
       return {
@@ -55,11 +61,11 @@ app.get('/api/v1/authors', (req, res) => {
   admin.auth().listUsers().then((listUsersResult) => {
     const authors = listUsersResult.users.map((user) => {
       console.log(user.toJSON());
-      return {
+      return ({
         id: user.uid,
         display_name: user.displayName,
         photo_URL: user.photoURL,
-      };
+      });
     });
     res.send({ authors });
   }).catch((err) => {
