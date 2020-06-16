@@ -3,11 +3,14 @@ import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    margin: '40px 104px 0 44px',
+    margin: '40px 44px 0 44px',
+    [theme.breakpoints.up('md')]: {
+      margin: '40px 20% 0 20%',
+    }
   },
-});
+}));
 
 const Root = ({ route }) => {
   const classes = useStyles();
