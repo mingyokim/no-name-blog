@@ -9,9 +9,12 @@ const blogURLs = (state = initialState, action) => {
       return Object.assign(
         {},
         state,
-        newURLs.reduce((stateAcc, { id, url }) => Object.assign({}, stateAcc, {
-          [id]: url
-        }, {}))
+        newURLs.reduce(
+          (stateAcc, { id, url }) => Object.assign({}, stateAcc, {
+            [id]: url
+          }),
+          {}
+        )
       );
     default:
       return state;

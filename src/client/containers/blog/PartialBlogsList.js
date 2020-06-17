@@ -15,12 +15,13 @@ class PartialBlogsList extends React.Component {
         loaded
       },
       addPartialBlogs,
+      addBlogURLs,
     } = this.props;
 
     if (!loaded) {
       axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs } }) => {
         addPartialBlogs(partialBlogs);
-        addBlogURLsAction(partialBlogs);
+        addBlogURLs(partialBlogs);
       }).catch((err) => {
         console.log(err);
       });

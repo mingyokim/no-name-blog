@@ -25,6 +25,7 @@ class BlogURL extends React.Component {
         }
       },
       blogURLs,
+      addBlogURLs,
     } = this.props;
 
     const id = currentBlogURL.split('-').slice(-1)[0];
@@ -40,15 +41,18 @@ class BlogURL extends React.Component {
         data: {
           partialBlog: {
             url,
-          }
+          },
+          partialBlog,
         }
       }) => {
+        addBlogURLs([partialBlog]);
         if (url === currentBlogURL) {
           this.setState({ loaded: true, status: EXACT_MATCH });
         } else {
           this.setState({ loaded: true, status: PARTIAL_MATCH });
         }
-      }).catch(() => {
+      }).catch((err) => {
+        console.log(err);
         this.setState({ loaded: true, status: INVALID_ID });
       });
     }
@@ -56,6 +60,24 @@ class BlogURL extends React.Component {
 
   render() {
     const { loaded, status } = this.state;
+
+    const {
+      match: {
+        params: {
+          blog_url: currentBlogURL,
+        }
+      },
+      blogURLs,
+    } = this.props;
+
+    const id = currentBlogURL.split('-').slice(-1)[0];
+
+    if (id in blogURLs) {
+      if (blogURLs[id] === currentBlogURL) {
+        return <p>{EXACT_MATCH}</p>;
+      }
+      return <p>{PARTIAL_MATCH}</p>;
+    }
 
     if (loaded) {
       return <p>{status}</p>;
@@ -80,6 +102,7 @@ BlogURL.propTypes = {
     })
   }).isRequired,
   blogURLs: PropTypes.objectOf(PropTypes.string).isRequired,
+  addBlogURLs: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogURL);
