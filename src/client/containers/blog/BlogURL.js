@@ -5,16 +5,11 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import addBlogURLsAction from '../../../actions/blogURLs/addBlogURLs';
 
-const INVALID_ID = 0;
-const EXACT_MATCH = 1;
-const PARTIAL_MATCH = 2;
-
 class BlogURL extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // loaded: false,
       loading: true,
     };
   }
@@ -26,7 +21,6 @@ class BlogURL extends React.Component {
           blog_url: currentBlogURL,
         }
       },
-      // blogURLs,
       addBlogURLs,
     } = this.props;
 
@@ -50,21 +44,21 @@ class BlogURL extends React.Component {
       // this.setState({ loading: false });
       addBlogURLs([partialBlog]);
       if (url === currentBlogURL) {
-        this.setState({ loading: false, status: EXACT_MATCH });
+        this.setState({ loading: false });
       } else {
-        this.setState({ loading: false, status: PARTIAL_MATCH });
+        this.setState({ loading: false });
       }
       // }).catch((err) => {
     }).catch(() => {
       // this.setState({ loading: false });
       // console.log(err);
-      this.setState({ loading: false, status: INVALID_ID });
+      this.setState({ loading: false });
     });
     // }
   }
 
   render() {
-    const { loading, status } = this.state;
+    const { loading } = this.state;
 
     const {
       match: {
@@ -89,14 +83,7 @@ class BlogURL extends React.Component {
       return <p>loading</p>;
     }
 
-    switch (status) {
-      case EXACT_MATCH:
-        return <p>exact match</p>;
-      case PARTIAL_MATCH:
-        return <Redirect to={`/blogs/${trueBlogURL}`} />;
-      default:
-        return <Redirect to="page-not-found" />;
-    }
+    return <Redirect to="page-not-found" />;
   }
 }
 
