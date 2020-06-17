@@ -78,6 +78,28 @@ app.get('/api/v1/partial-blogs/:id', (req, res) => {
     });
 });
 
+app.get('/api/v1/blogs/:id', (req, res) => {
+  const db = admin.firestore();
+  const { id } = req.params;
+  db.collection('blogs').doc(id).get().then((doc) => {
+    if (!doc.exists) {
+      res.send(404, `Requested partial blog with id ${id} was not found`);
+    } else {
+      const data = doc.data();
+      data.createdAt = data.createdAt.toDate().toJSON();
+      const blog = {
+        id: doc.id,
+        ...data,
+      };
+      res.send({ blog });
+    }
+  })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send('server error');
+    });
+});
+
 app.get('/api/v1/authors', (req, res) => {
   admin.auth().listUsers().then((listUsersResult) => {
     const authors = listUsersResult.users.map((user) => {

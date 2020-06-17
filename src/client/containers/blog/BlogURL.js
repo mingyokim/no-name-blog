@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import addBlogURLsAction from '../../../actions/blogURLs/addBlogURLs';
+import Blog from './Blog';
 
 class BlogURL extends React.Component {
   constructor(props) {
@@ -21,18 +22,16 @@ class BlogURL extends React.Component {
           blog_url: currentBlogURL,
         }
       },
+      blogURLs,
       addBlogURLs,
     } = this.props;
 
     const id = currentBlogURL.split('-').slice(-1)[0];
 
-    // if (id in blogURLs) {
-    //   if (blogURLs[id] === currentBlogURL) {
-    //     this.setState({ loaded: true, status: EXACT_MATCH });
-    //   } else {
-    //     this.setState({ loaded: true, status: PARTIAL_MATCH });
-    //   }
-    // } else {
+    if (id in blogURLs) {
+      return;
+    }
+
     axios.get(`/api/v1/partial-blogs/${id}`).then(({
       data: {
         partialBlog: {
@@ -41,20 +40,15 @@ class BlogURL extends React.Component {
         partialBlog,
       }
     }) => {
-      // this.setState({ loading: false });
       addBlogURLs([partialBlog]);
       if (url === currentBlogURL) {
         this.setState({ loading: false });
       } else {
         this.setState({ loading: false });
       }
-      // }).catch((err) => {
     }).catch(() => {
-      // this.setState({ loading: false });
-      // console.log(err);
       this.setState({ loading: false });
     });
-    // }
   }
 
   render() {
@@ -74,7 +68,7 @@ class BlogURL extends React.Component {
 
     if (id in blogURLs) {
       if (trueBlogURL === currentBlogURL) {
-        return <p>exact match</p>;
+        return <Blog id={id} />;
       }
       return <Redirect to={`/blogs/${trueBlogURL}`} />;
     }
@@ -92,7 +86,7 @@ const mapStateToProps = ({ blogURLs }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addBlogURLs: userId => dispatch(addBlogURLsAction(userId))
+  addBlogURLs: blogURL => dispatch(addBlogURLsAction(blogURL))
 });
 
 BlogURL.propTypes = {
