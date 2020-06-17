@@ -86,9 +86,8 @@ const AuthorsList = ({
     return (
       <Grid container spacing={2}>
         {authors.map(({ display_name: displayName, photo_URL: photoURL, id }) => (
-          <Grid item>
+          <Grid item key={id}>
             <Author
-              key={id}
               displayName={displayName}
               photoURL={photoURL}
               isFilterOn={id === filterUserId}

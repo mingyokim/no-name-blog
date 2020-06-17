@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import addPartialBlogsAction from '../../../actions/partialBlogs/addPartialBlogs';
 import updatePartialBlogsAction from '../../../actions/partialBlogs/updatePartialBlogs';
 import loadPartialBlogsAction from '../../../actions/partialBlogs/loadPartialBlogs';
+import addBlogURLsAction from '../../../actions/blogURLs/addBlogURLs';
 import PartialBlogsListComponent from '../../components/blog/PartialBlogsList';
 
 class PartialBlogsList extends React.Component {
@@ -19,6 +20,7 @@ class PartialBlogsList extends React.Component {
     if (!loaded) {
       axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs } }) => {
         addPartialBlogs(partialBlogs);
+        addBlogURLsAction(partialBlogs);
       }).catch((err) => {
         console.log(err);
       });
@@ -33,6 +35,7 @@ class PartialBlogsList extends React.Component {
       },
       updatePartialBlogs,
       loadPartialBlogs,
+      addBlogURLs,
     } = this.props;
 
     const {
@@ -50,6 +53,7 @@ class PartialBlogsList extends React.Component {
           }
         }).then(({ data: { partialBlogs } }) => {
           updatePartialBlogs(partialBlogs);
+          addBlogURLs(partialBlogs);
         }).catch((err) => {
           console.log(err);
         });
@@ -86,11 +90,13 @@ PartialBlogsList.propTypes = {
       title: PropTypes.string,
       preview: PropTypes.string,
       createdAt: PropTypes.string,
+      url: PropTypes.string,
     })),
   }).isRequired,
   addPartialBlogs: PropTypes.func.isRequired,
   updatePartialBlogs: PropTypes.func.isRequired,
   loadPartialBlogs: PropTypes.func.isRequired,
+  addBlogURLs: PropTypes.func.isRequired,
   authorFilter: PropTypes.shape({
     isFilterOn: PropTypes.bool,
     userId: PropTypes.string,
@@ -106,6 +112,7 @@ const mapDispatchToProps = dispatch => ({
   addPartialBlogs: partialBlogs => dispatch(addPartialBlogsAction(partialBlogs)),
   updatePartialBlogs: partialBlogs => dispatch(updatePartialBlogsAction(partialBlogs)),
   loadPartialBlogs: () => dispatch(loadPartialBlogsAction()),
+  addBlogURLs: partialBlogs => dispatch(addBlogURLsAction(partialBlogs))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartialBlogsList);

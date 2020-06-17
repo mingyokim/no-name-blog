@@ -1,6 +1,9 @@
 import loadable from '@loadable/component';
 
 import Root from '../client/components/Root';
+
+const Blog = loadable(() => import('../client/containers/blog/BlogURL'));
+// import Blog from '../client/containers/blog/BlogURL';
 // import { PageNotFound, RedirectToPageNotFound } from '../client/components/PageNotFound';
 // import WriterHome from '../client/components/writer/WriterHome';
 // import Login from '../client/components/writer/Login';
@@ -21,6 +24,11 @@ const routes = [
         exact: true,
         component: Home,
         // loadDataFromClient: loadBlogs,
+      },
+      {
+        path: '/blogs/:blog_url',
+        exact: true,
+        component: Blog,
       },
       {
         path: '/page-not-found',

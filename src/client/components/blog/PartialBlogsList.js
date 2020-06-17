@@ -5,6 +5,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Divider from '@material-ui/core/Divider';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles({
   titleSkeleton: {
@@ -17,7 +19,8 @@ const PartialBlog = ({
   author,
   title,
   preview,
-  createdAt
+  createdAt,
+  url
 }) => {
   const classes = useStyles();
   const date = new Date(createdAt);
@@ -28,7 +31,16 @@ const PartialBlog = ({
       <Grid item>
         {loading
           ? <Skeleton height={48} className={classes.titleSkeleton} />
-          : <Typography variant="h3">{title}</Typography>}
+          : (
+            <Link
+              to={`/blogs/${url}`}
+              variant="h3"
+              component={RouterLink}
+              color="inherit"
+            >
+              {title}
+            </Link>
+          )}
       </Grid>
       <Grid item>
         {loading
@@ -53,6 +65,7 @@ PartialBlog.propTypes = {
   title: PropTypes.string,
   preview: PropTypes.string,
   createdAt: PropTypes.string,
+  url: PropTypes.string,
 };
 
 PartialBlog.defaultProps = {
@@ -60,6 +73,7 @@ PartialBlog.defaultProps = {
   title: '',
   preview: '',
   createdAt: new Date().toJSON(),
+  url: '',
 };
 
 const PartialBlogsList = ({ loaded, partialBlogs }) => (
@@ -70,7 +84,8 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => (
         author,
         title,
         preview,
-        createdAt
+        createdAt,
+        url,
       }) => (
         <PartialBlog
             key={id}
@@ -78,6 +93,7 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => (
             title={title}
             preview={preview}
             createdAt={createdAt}
+            url={url}
             loading={false}
           />
       ))
@@ -93,6 +109,7 @@ PartialBlogsList.propTypes = {
     title: PropTypes.string,
     preview: PropTypes.string,
     createdAt: PropTypes.string,
+    url: PropTypes.string,
   })).isRequired,
 };
 
