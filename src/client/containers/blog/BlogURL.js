@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import addBlogURLsAction from '../../../actions/blogURLs/addBlogURLs';
 
 const INVALID_ID = 0;
@@ -13,7 +14,8 @@ class BlogURL extends React.Component {
     super(props);
 
     this.state = {
-      loaded: false,
+      // loaded: false,
+      loading: true,
     };
   }
 
@@ -24,42 +26,45 @@ class BlogURL extends React.Component {
           blog_url: currentBlogURL,
         }
       },
-      blogURLs,
+      // blogURLs,
       addBlogURLs,
     } = this.props;
 
     const id = currentBlogURL.split('-').slice(-1)[0];
 
-    if (id in blogURLs) {
-      if (blogURLs[id] === currentBlogURL) {
-        this.setState({ loaded: true, status: EXACT_MATCH });
-      } else {
-        this.setState({ loaded: true, status: PARTIAL_MATCH });
+    // if (id in blogURLs) {
+    //   if (blogURLs[id] === currentBlogURL) {
+    //     this.setState({ loaded: true, status: EXACT_MATCH });
+    //   } else {
+    //     this.setState({ loaded: true, status: PARTIAL_MATCH });
+    //   }
+    // } else {
+    axios.get(`/api/v1/partial-blogs/${id}`).then(({
+      data: {
+        partialBlog: {
+          url,
+        },
+        partialBlog,
       }
-    } else {
-      axios.get(`/api/v1/partial-blogs/${id}`).then(({
-        data: {
-          partialBlog: {
-            url,
-          },
-          partialBlog,
-        }
-      }) => {
-        addBlogURLs([partialBlog]);
-        if (url === currentBlogURL) {
-          this.setState({ loaded: true, status: EXACT_MATCH });
-        } else {
-          this.setState({ loaded: true, status: PARTIAL_MATCH });
-        }
-      }).catch((err) => {
-        console.log(err);
-        this.setState({ loaded: true, status: INVALID_ID });
-      });
-    }
+    }) => {
+      // this.setState({ loading: false });
+      addBlogURLs([partialBlog]);
+      if (url === currentBlogURL) {
+        this.setState({ loading: false, status: EXACT_MATCH });
+      } else {
+        this.setState({ loading: false, status: PARTIAL_MATCH });
+      }
+      // }).catch((err) => {
+    }).catch(() => {
+      // this.setState({ loading: false });
+      // console.log(err);
+      this.setState({ loading: false, status: INVALID_ID });
+    });
+    // }
   }
 
   render() {
-    const { loaded, status } = this.state;
+    const { loading, status } = this.state;
 
     const {
       match: {
@@ -71,19 +76,27 @@ class BlogURL extends React.Component {
     } = this.props;
 
     const id = currentBlogURL.split('-').slice(-1)[0];
+    const trueBlogURL = blogURLs[id];
 
     if (id in blogURLs) {
-      if (blogURLs[id] === currentBlogURL) {
-        return <p>{EXACT_MATCH}</p>;
+      if (trueBlogURL === currentBlogURL) {
+        return <p>exact match</p>;
       }
-      return <p>{PARTIAL_MATCH}</p>;
+      return <Redirect to={`/blogs/${trueBlogURL}`} />;
     }
 
-    if (loaded) {
-      return <p>{status}</p>;
+    if (loading) {
+      return <p>loading</p>;
     }
 
-    return <p>loading</p>;
+    switch (status) {
+      case EXACT_MATCH:
+        return <p>exact match</p>;
+      case PARTIAL_MATCH:
+        return <Redirect to={`/blogs/${trueBlogURL}`} />;
+      default:
+        return <Redirect to="page-not-found" />;
+    }
   }
 }
 
