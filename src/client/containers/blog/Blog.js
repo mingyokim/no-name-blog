@@ -3,6 +3,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import addBlogAction from '../../../actions/blog/addBlog';
+import BlogComponent from '../../components/blog/Blog';
 
 class Blog extends React.Component {
   componentDidMount() {
@@ -34,7 +35,18 @@ class Blog extends React.Component {
     } = this.props;
 
     if (id in blogs) {
-      return <p>{`loaded ${id}`}</p>;
+      // const {
+      //   author,
+      //   authorId,
+      //   content,
+      //   createdAt,
+      //   title,
+      // } = blogs[id];
+      return (
+        <BlogComponent
+          {...blogs[id]}
+        />
+      );
     }
 
     return <p>loading...</p>;

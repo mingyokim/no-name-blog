@@ -2,22 +2,24 @@ import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: '40px 44px 0 44px',
+    padding: '40px 44px 40px 44px',
     [theme.breakpoints.up('md')]: {
-      margin: '40px 20% 0 20%',
-    }
+      padding: '40px 20% 40px 20%',
+    },
+    height: '100vh'
   },
 }));
 
 const Root = ({ route }) => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <Container className={classes.root}>
       {renderRoutes(route.routes)}
-    </div>
+    </Container>
   );
 };
 
