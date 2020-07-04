@@ -179,15 +179,36 @@ app.post('/sessionLogin', (req, res) => {
   // The session cookie will have the same claims as the ID token.
   // To only allow session cookie setting on recent sign-in, auth_time in ID token
   // can be checked to ensure user was recently signed in before creating a session cookie.
-  admin.auth().createSessionCookie(idToken, { expiresIn })
-    .then((sessionCookie) => {
-      // console.log('session cookie:', sessionCookie);
-      // Set cookie policy for session cookie.
-      // const options = { maxAge: expiresIn, httpOnly: true, secure: true };
-      const options = { maxAge: expiresIn };
-      res.cookie('session', sessionCookie, options);
-      res.end(JSON.stringify({ status: 'success' }));
-    }, (err) => {
+  admin.auth().verifyIdToken(idToken)
+    .then(({ uid, email }) => {
+      // if email is in authors collection, then create session cookie (same logic as block below)
+      const db = admin.firestore();
+      db.collection('authors').doc(email).get()
+        .then((doc) => {
+          if (doc.exists) {
+            admin.auth().createSessionCookie(idToken, { expiresIn })
+              .then((sessionCookie) => {
+                // console.log('session cookie:', sessionCookie);
+                // Set cookie policy for session cookie.
+                // const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+                const options = { maxAge: expiresIn };
+                res.cookie('session', sessionCookie, options);
+                res.end(JSON.stringify({ status: 'success' }));
+              }, (err) => {
+                console.log(err);
+                res.status(401).send('UNAUTHORIZED REQUEST!');
+              });
+          } else {
+            admin.auth().deleteUser(uid);
+            res.status(401).send('UNAUTHORIZED REQUEST!');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).send('server error');
+        });
+    })
+    .catch((err) => {
       console.log(err);
       res.status(401).send('UNAUTHORIZED REQUEST!');
     });
