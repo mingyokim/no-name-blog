@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../../containers/writer/Navbar';
 // import GoogleLogin from 'react-google-login';
 
 // const responseGoogle = (response) => {
@@ -15,7 +16,7 @@ import { Link } from 'react-router-dom';
 // );
 
 const WriterHome = () => (
-  <Link to="/logout">Logout!</Link>
+  <Navbar />
 );
 
 export default WriterHome;
