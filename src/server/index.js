@@ -151,8 +151,20 @@ app.get(['/writer', '/writer*'], (req, res) => {
   // Verify the session cookie. In this case an additional check is added to detect
   // if the user's Firebase session was revoked, user deleted/disabled, etc.
   admin.auth().verifySessionCookie(sessionCookie, true)
-    .then(() => {
-      router(req, res);
+    .then(({ uid }) => admin.auth().getUser(uid))
+    .then(({
+      uid, email, displayName, photoURL
+    }) => {
+      const preloadedState = {
+        author: {
+          uid,
+          email,
+          displayName,
+          photoURL,
+        }
+      };
+
+      router(req, res, preloadedState);
     })
     .catch(() => {
       // Session cookie is unavailable or invalid. Force user to login.
