@@ -35,7 +35,6 @@ const routes = [
       {
         path: '/logout',
         component: Logout,
-        auth: true,
       },
       {
         path: '/login',
@@ -44,7 +43,6 @@ const routes = [
       {
         path: '/writer',
         component: WriterHome,
-        auth: true,
       },
       {
         path: '/page-not-found',
