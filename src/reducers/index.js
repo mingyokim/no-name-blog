@@ -4,6 +4,7 @@ import authors from './authors';
 import authorFilter from './authorFilter';
 import blogURLs from './blogURLs';
 import blogs from './blogs';
+import author from './author';
 
 const blogApp = combineReducers({
   partialBlogs,
@@ -11,6 +12,7 @@ const blogApp = combineReducers({
   blogs,
   authors,
   authorFilter,
+  author,
 });
 
 export default blogApp;

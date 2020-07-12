@@ -5,27 +5,20 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 // import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { FirebaseContext } from '../../firebase';
+import addAuthorAction from '../../../actions/author/addAuthor';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sessionCreated: false
-    };
-  }
-
   signInWithProvider = (firebase) => {
-    // const { firebase } = this.props;
-    console.log('firebase:', firebase);
+    const { addAuthor } = this.props;
     const provider = new fb.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then((result) => {
-      console.log('Result after sign in: ', result);
-      firebase.auth().currentUser.getIdToken(true).then((idToken) => {
-        axios.post('/sessionLogin', { idToken }).then((res) => {
-          console.log('session login success:', res);
-          this.setState({ sessionCreated: true });
+    firebase.auth().signInWithPopup(provider).then(({ user }) => {
+      user.getIdToken(true).then((idToken) => {
+        axios.post('/sessionLogin', { idToken }).then(() => {
+          addAuthor(user);
         }).catch((err) => {
           console.log(err);
         });
@@ -38,9 +31,9 @@ class Login extends React.Component {
   }
 
   render() {
-    const { sessionCreated } = this.state;
+    const { author } = this.props;
 
-    if (sessionCreated) {
+    if (author) {
       return (<Redirect to="/writer" />);
     }
 
@@ -64,4 +57,26 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapStateToProps = ({ author }) => ({
+  author,
+});
+
+const mapDispatchToProps = dispatch => ({
+  addAuthor: author => dispatch(addAuthorAction(author))
+});
+
+Login.propTypes = {
+  addAuthor: PropTypes.func.isRequired,
+  author: PropTypes.shape({
+    uid: PropTypes.string,
+    email: PropTypes.string,
+    displayName: PropTypes.string,
+    photoURL: PropTypes.string,
+  }),
+};
+
+Login.defaultProps = {
+  author: null,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

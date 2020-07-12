@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // import GoogleLogin from 'react-google-login';
 
 // const responseGoogle = (response) => {
@@ -14,7 +15,7 @@ import React from 'react';
 // );
 
 const WriterHome = () => (
-  <a href="/logout">Logout!</a>
+  <Link to="/logout">Logout!</Link>
 );
 
 export default WriterHome;

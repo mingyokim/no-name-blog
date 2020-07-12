@@ -1,6 +1,7 @@
 import loadable from '@loadable/component';
 
 import Root from '../client/components/Root';
+// import Logout from '../client/containers/writer/Logout';
 
 const Blog = loadable(() => import('../client/containers/blog/BlogURL'));
 // import Blog from '../client/containers/blog/BlogURL';
@@ -14,6 +15,7 @@ const PageNotFound = loadable(() => import('../client/components/PageNotFound'))
 const WriterHome = loadable(() => import('../client/components/writer/WriterHome'));
 const Login = loadable(() => import('../client/components/writer/Login'));
 const RedirectToPageNotFound = loadable(() => import('../client/components/RedirectToPageNotFound'));
+const Logout = loadable(() => import('../client/containers/writer/Logout'));
 
 const routes = [
   {
@@ -31,17 +33,23 @@ const routes = [
         component: Blog,
       },
       {
-        path: '/page-not-found',
-        exact: true,
-        component: PageNotFound
+        path: '/logout',
+        component: Logout,
+        auth: true,
       },
       {
         path: '/login',
-        component: Login
+        component: Login,
       },
       {
         path: '/writer',
         component: WriterHome,
+        auth: true,
+      },
+      {
+        path: '/page-not-found',
+        exact: true,
+        component: PageNotFound,
       },
       {
         component: RedirectToPageNotFound,

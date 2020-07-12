@@ -131,7 +131,7 @@ app.get('/login', (req, res) => {
     });
 });
 
-app.get('/logout', (req, res) => {
+app.post('/sessionLogout', (req, res) => {
   const sessionCookie = req.cookies.session || '';
   // console.log('logout session cookie:', sessionCookie);
   // console.log('cookies:', req.cookies);
@@ -139,10 +139,10 @@ app.get('/logout', (req, res) => {
   admin.auth().verifySessionCookie(sessionCookie)
     .then(decodedClaims => admin.auth().revokeRefreshTokens(decodedClaims.sub))
     .then(() => {
-      res.redirect('/login');
+      res.end();
     })
     .catch(() => {
-      res.redirect('/login');
+      res.end();
     });
 });
 
