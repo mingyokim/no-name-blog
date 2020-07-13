@@ -1,4 +1,4 @@
-import router from './router';
+import { router, renderWithState } from './router';
 
 require('dotenv').config();
 const favicon = require('serve-favicon');
@@ -164,7 +164,7 @@ app.get(['/writer', '/writer*'], (req, res) => {
         }
       };
 
-      router(req, res, preloadedState);
+      renderWithState(req, res, preloadedState);
     })
     .catch(() => {
       // Session cookie is unavailable or invalid. Force user to login.

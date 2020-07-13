@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 const Root = ({ route }) => {
   const classes = useStyles();
   return (
-    <Container className={classes.root}>
+    <Container className={classes.root} maxWidth={false}>
       {renderRoutes(route.routes)}
     </Container>
   );
