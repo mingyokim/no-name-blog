@@ -34,7 +34,7 @@ const PartialBlog = ({
           : (
             <Link
               to={`/blogs/${url}`}
-              variant="h3"
+              variant="h1"
               component={RouterLink}
               color="inherit"
             >
