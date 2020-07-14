@@ -58,11 +58,11 @@ const render = (req, res, store) => {
   const html = renderToString(jsx);
   const scriptTags = extractor.getScriptTags();
 
-  if (context.url) {
-    // Somewhere a `<Redirect>` was rendered
-    console.log('Found a redirect to:', context.url);
-    return res.redirect(301, context.url);
-  }
+  // if (context.url) {
+  //   // Somewhere a `<Redirect>` was rendered
+  //   console.log('Found a redirect to:', context.url);
+  //   return res.redirect(301, context.url);
+  // }
   // we're good, send the response
 
   // Grab the CSS from the sheets.
