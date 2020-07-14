@@ -42,11 +42,11 @@ const PartialBlog = ({
             </Link>
           )}
       </Grid>
-      <Grid item>
+      {/* <Grid item>
         {loading
           ? <Skeleton height={32} className={classes.nameSkeleton} />
           : <Typography variant="body2">{preview}</Typography>}
-      </Grid>
+      </Grid> */}
       <Grid item>
         {loading
           ? <Skeleton height={32} width={100} />
