@@ -1,4 +1,5 @@
 import { router, renderWithState } from './router';
+import { titleToURL } from './helper';
 
 require('dotenv').config();
 const favicon = require('serve-favicon');
@@ -97,6 +98,47 @@ app.get('/api/v1/blogs/:id', (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(404).send('server error');
+    });
+});
+
+app.post('/api/v1/blogs/new', (req, res) => {
+  const sessionCookie = req.cookies.session || '';
+  let blogID;
+  admin.auth().verifySessionCookie(sessionCookie, true)
+    .then(({ uid }) => admin.auth().getUser(uid))
+    .then(({ uid, displayName }) => {
+      const db = admin.firestore();
+      const { title, content } = req.body;
+      const createdAt = admin.firestore.Timestamp.fromDate(new Date());
+      const preview = ''; // TODO: actual preview
+      const writePromises = [];
+
+      const blogRef = db.collection('blogs').doc();
+      blogID = blogRef.id;
+      const url = titleToURL(title, blogID);
+      const blog = {
+        title,
+        author: displayName,
+        authorId: uid,
+        content,
+        createdAt,
+        preview,
+        url
+      };
+      writePromises.push(blogRef.set(blog));
+
+      const partialBlog = Object.assign({}, blog);
+      delete partialBlog.content;
+      writePromises.push(db.collection('blogs_partial').doc(blogID).set(partialBlog));
+
+      return Promise.all(writePromises);
+    })
+    .then(() => {
+      res.end(JSON.stringify({ id: blogID }));
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('server error');
     });
 });
 

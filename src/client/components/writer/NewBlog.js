@@ -2,6 +2,8 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 class NewBlog extends React.Component {
   constructor(props) {
@@ -9,6 +11,8 @@ class NewBlog extends React.Component {
     this.state = {
       title: '',
       content: '',
+      publishing: false,
+      published: false,
     };
   }
 
@@ -20,8 +24,29 @@ class NewBlog extends React.Component {
     this.setState({ content: event.target.value });
   }
 
-  render() {
+  publish = () => {
     const { title, content } = this.state;
+
+    const payload = {
+      title,
+      content
+    };
+
+    this.setState({ publishing: true });
+    axios.post('/api/v1/blogs/new', payload).then(() => {
+      this.setState({ published: true });
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  render() {
+    const {
+      title, content, publishing, published
+    } = this.state;
+    if (published) {
+      return <Redirect to="/writer" />;
+    }
     return (
       <Grid container spacing={5} direction="column">
         <Grid item>
@@ -50,6 +75,8 @@ class NewBlog extends React.Component {
               <Button
                 variant="outlined"
                 color="primary"
+                onClick={this.publish}
+                disabled={publishing}
               >
                 Publish
               </Button>
