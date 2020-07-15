@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+// import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import loadable from '@loadable/component';
 
 // import { Provider } from 'react-redux';
@@ -12,20 +12,20 @@ import routes from '../../routes';
 // import { FirebaseContext, firebaseConfig } from './firebase';
 const FirebaseProvider = loadable(() => import('../firebase/FirebaseProvider'));
 
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      light: '#a6d4fa',
-      main: '#90caf9',
-      dark: '#648dae',
-    },
-    background: {
-      paper: '#343638',
-      default: '#131415',
-    }
-  }
-});
+// const theme = createMuiTheme({
+//   palette: {
+//     type: 'dark',
+//     primary: {
+//       light: '#a6d4fa',
+//       main: '#90caf9',
+//       dark: '#648dae',
+//     },
+//     background: {
+//       paper: '#343638',
+//       default: '#131415',
+//     }
+//   }
+// });
 
 // const firebaseConfig = {
 //   apiKey: process.env.FIREBASE_API_KEY,
@@ -63,10 +63,8 @@ const theme = createMuiTheme({
 
 const App = () => (
   <FirebaseProvider>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {renderRoutes(routes)}
-    </ThemeProvider>
+    <CssBaseline />
+    {renderRoutes(routes)}
   </FirebaseProvider>
 );
 

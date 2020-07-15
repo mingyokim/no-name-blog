@@ -5,10 +5,12 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { loadableReady } from '@loadable/component';
 import throttle from 'lodash/throttle';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 import App from './components/App';
 import blogApp from '../reducers';
 import { loadState, saveState } from './storage/localStorage';
+import theme from '../theme';
 
 // Scrapping preloaded state: just load the stuff in client side only
 // Grab the state from a global variable injected into the server-generated HTML
@@ -30,16 +32,28 @@ store.subscribe(throttle(() => {
   });
 }, 1000));
 
-const renderRouter = (Component) => {
-  ReactDOM.hydrate(
+const Main = () => {
+  React.useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+  return (
     <Provider store={store}>
       <BrowserRouter>
-        <Component />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </BrowserRouter>
-    </Provider>, document.getElementById('root')
+    </Provider>
   );
 };
 
-loadableReady(() => renderRouter(App));
+const renderRouter = (Component) => {
+  ReactDOM.hydrate(<Component />, document.querySelector('#root'));
+};
+
+loadableReady(() => renderRouter(Main));
 
 // ReactDOM.render(<App />, document.getElementById('root'));

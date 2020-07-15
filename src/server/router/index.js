@@ -1,13 +1,14 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { ServerStyleSheets } from '@material-ui/core/styles';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 import serialize from 'serialize-javascript';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { ChunkExtractor } from '@loadable/server';
 import App from '../../client/components/App';
 import blogApp from '../../reducers';
+import theme from '../../theme';
 
 const path = require('path');
 
@@ -51,7 +52,9 @@ const render = (req, res, store) => {
   const jsx = extractor.collectChunks(sheets.collect(
     <Provider store={store}>
       <StaticRouter location={req.url} context={context}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </StaticRouter>
     </Provider>
   ));
