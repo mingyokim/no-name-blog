@@ -33,7 +33,7 @@ const Home = () => (
       <Typography variant="h1">Blog</Typography>
     </Grid>
     <Grid item>
-      <Grid container spacing={3} direction="column" alignItems="stretch">
+      <Grid container spacing={6} direction="column">
         <Grid item>
           <AuthorsList />
         </Grid>

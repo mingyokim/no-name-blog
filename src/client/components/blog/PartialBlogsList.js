@@ -27,33 +27,32 @@ const PartialBlog = ({
   const month = date.getMonth();
   const day = date.getDate();
   return (
-    <Grid container spacing={2} direction="column">
-      <Grid item>
-        {loading
-          ? <Skeleton height={48} className={classes.titleSkeleton} />
-          : (
-            <Link
-              to={`/blogs/${url}`}
-              variant="h1"
-              component={RouterLink}
-              color="inherit"
-            >
-              {title}
-            </Link>
-          )}
-      </Grid>
-      {/* <Grid item>
-        {loading
-          ? <Skeleton height={32} className={classes.nameSkeleton} />
-          : <Typography variant="body2">{preview}</Typography>}
-      </Grid> */}
-      <Grid item>
-        {loading
-          ? <Skeleton height={32} width={100} />
-          : <Typography variant="body2">{`${month}/${day} · ${author}`}</Typography>}
-      </Grid>
-      <Grid item>
-        <Divider />
+    <Grid item>
+      <Grid container spacing={2} direction="column">
+        <Grid item>
+          {loading
+            ? <Skeleton height={48} className={classes.titleSkeleton} />
+            : (
+              <Link
+                to={`/blogs/${url}`}
+                variant="h1"
+                component={RouterLink}
+                color="inherit"
+              >
+                {title}
+              </Link>
+            )}
+        </Grid>
+        {/* <Grid item>
+          {loading
+            ? <Skeleton height={32} className={classes.nameSkeleton} />
+            : <Typography variant="body2">{preview}</Typography>}
+        </Grid> */}
+        <Grid item>
+          {loading
+            ? <Skeleton height={32} width={100} />
+            : <Typography variant="body2">{`${month}/${day} · ${author}`}</Typography>}
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -77,7 +76,7 @@ PartialBlog.defaultProps = {
 };
 
 const PartialBlogsList = ({ loaded, partialBlogs }) => (
-  <>
+  <Grid container spacing={3} direction="column">
     {loaded
       ? partialBlogs.map(({
         id,
@@ -87,18 +86,23 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => (
         createdAt,
         url,
       }) => (
-        <PartialBlog
-            key={id}
-            author={author}
-            title={title}
-            preview={preview}
-            createdAt={createdAt}
-            url={url}
-            loading={false}
-          />
+        <>
+          <PartialBlog
+              key={id}
+              author={author}
+              title={title}
+              preview={preview}
+              createdAt={createdAt}
+              url={url}
+              loading={false}
+            />
+          <Grid item>
+            <Divider />
+          </Grid>
+        </>
       ))
       : <PartialBlog loading />}
-  </>
+  </Grid>
 );
 
 PartialBlogsList.propTypes = {
