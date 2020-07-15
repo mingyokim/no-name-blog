@@ -30,7 +30,7 @@ import PartialBlogsList from '../containers/blog/PartialBlogsList';
 const Home = () => (
   <Grid container spacing={10} direction="column">
     <Grid item>
-      <Typography variant="h3">Blog</Typography>
+      <Typography variant="h1">Blog</Typography>
     </Grid>
     <Grid item>
       <Grid container spacing={3} direction="column" alignItems="stretch">

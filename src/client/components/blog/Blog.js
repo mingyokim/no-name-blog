@@ -19,7 +19,7 @@ const Blog = ({
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
-        <Typography variant="h3">{title}</Typography>
+        <Typography variant="h1">{title}</Typography>
       </Grid>
       <Grid item>
         <Typography variant="body2">{`By ${author}`}</Typography>
