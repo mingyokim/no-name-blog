@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ReactMarkdown from 'react-markdown';
 
+import displayDate from '../../helper/displayDate';
+
 const Blog = ({
   author,
   authorId,
@@ -12,9 +14,6 @@ const Blog = ({
   title,
 }) => {
   const date = new Date(createdAt);
-  const month = date.getMonth();
-  const day = date.getDate();
-  const year = date.getFullYear();
 
   return (
     <Grid container spacing={2} direction="column">
@@ -22,10 +21,14 @@ const Blog = ({
         <Typography variant="h1">{title}</Typography>
       </Grid>
       <Grid item>
-        <Typography variant="body2">{`By ${author}`}</Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="body2">{`${month}/${day}/${year}`}</Typography>
+        <Grid container spacing={0} direction="column">
+          <Grid item>
+            <Typography variant="subtitle2">{`By ${author}`}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle2">{displayDate(date)}</Typography>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item>
         <ReactMarkdown source={content} />
