@@ -17,11 +17,7 @@ class BlogURL extends React.Component {
 
   componentDidMount() {
     const {
-      match: {
-        params: {
-          blog_url: currentBlogURL,
-        }
-      },
+      currentBlogURL,
       blogURLs,
       addBlogURLs,
     } = this.props;
@@ -55,11 +51,7 @@ class BlogURL extends React.Component {
     const { loading } = this.state;
 
     const {
-      match: {
-        params: {
-          blog_url: currentBlogURL,
-        }
-      },
+      currentBlogURL,
       blogURLs,
     } = this.props;
 
@@ -90,11 +82,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 BlogURL.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      blog_url: PropTypes.string
-    })
-  }).isRequired,
+  currentBlogURL: PropTypes.string.isRequired,
   blogURLs: PropTypes.objectOf(PropTypes.string).isRequired,
   addBlogURLs: PropTypes.func.isRequired,
 };
