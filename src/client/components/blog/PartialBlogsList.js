@@ -8,6 +8,8 @@ import Divider from '@material-ui/core/Divider';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
+import displayDate from '../../helper/displayDate';
+
 const useStyles = makeStyles({
   titleSkeleton: {
     width: '40%',
@@ -24,11 +26,9 @@ const PartialBlog = ({
 }) => {
   const classes = useStyles();
   const date = new Date(createdAt);
-  const month = date.getMonth();
-  const day = date.getDate();
   return (
     <Grid item>
-      <Grid container spacing={2} direction="column">
+      <Grid container spacing={0} direction="column">
         <Grid item>
           {loading
             ? <Skeleton height={48} className={classes.titleSkeleton} />
@@ -51,7 +51,7 @@ const PartialBlog = ({
         <Grid item>
           {loading
             ? <Skeleton height={32} width={100} />
-            : <Typography variant="body2">{`${month}/${day} · ${author}`}</Typography>}
+            : <Typography variant="subtitle1">{`${displayDate(date)} · ${author}`}</Typography>}
         </Grid>
       </Grid>
     </Grid>
@@ -76,7 +76,7 @@ PartialBlog.defaultProps = {
 };
 
 const PartialBlogsList = ({ loaded, partialBlogs }) => (
-  <Grid container spacing={3} direction="column">
+  <Grid container spacing={2} direction="column">
     {loaded
       ? partialBlogs.map(({
         id,
@@ -87,7 +87,7 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => (
         url,
       }) => (
         <>
-          <PartialBlog
+            <PartialBlog
               key={id}
               author={author}
               title={title}
@@ -96,10 +96,10 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => (
               url={url}
               loading={false}
             />
-          <Grid item>
-            <Divider />
-          </Grid>
-        </>
+            <Grid item>
+              <Divider />
+            </Grid>
+          </>
       ))
       : <PartialBlog loading />}
   </Grid>

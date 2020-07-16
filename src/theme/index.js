@@ -28,6 +28,12 @@ const theme = createMuiTheme({
     h1: {
       fontFamily: 'Canela',
       fontSize: '2rem',
+    },
+    subtitle1: {
+      fontFamily: 'Arial',
+      fontSize: '1.125rem',
+      fontStyle: 'italic',
+      color: '#7D7D7D',
     }
   },
   overrides: {
