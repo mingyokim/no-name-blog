@@ -27,7 +27,7 @@ const theme = createMuiTheme({
   typography: {
     h1: {
       fontFamily: 'Canela',
-      fontSize: '2rem',
+      fontSize: '2.5rem',
     },
     subtitle1: {
       fontFamily: 'Arial',
