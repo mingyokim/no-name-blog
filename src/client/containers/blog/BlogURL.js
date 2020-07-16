@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import addBlogURLsAction from '../../../actions/blogURLs/addBlogURLs';
 import Blog from './Blog';
+import Loading from '../../components/blog/BlogLoading';
 
 class BlogURL extends React.Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class BlogURL extends React.Component {
     }
 
     if (loading) {
-      return <p>loading</p>;
+      return <Loading />;
     }
 
     return <Redirect to="page-not-found" />;

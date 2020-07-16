@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import addBlogAction from '../../../actions/blog/addBlog';
 import BlogComponent from '../../components/blog/Blog';
+import Loading from '../../components/blog/BlogLoading';
 
 class Blog extends React.Component {
   componentDidMount() {
@@ -35,13 +36,6 @@ class Blog extends React.Component {
     } = this.props;
 
     if (id in blogs) {
-      // const {
-      //   author,
-      //   authorId,
-      //   content,
-      //   createdAt,
-      //   title,
-      // } = blogs[id];
       return (
         <BlogComponent
           {...blogs[id]}
@@ -49,7 +43,7 @@ class Blog extends React.Component {
       );
     }
 
-    return <p>loading...</p>;
+    return <Loading />;
   }
 }
 
