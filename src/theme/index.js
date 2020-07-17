@@ -29,6 +29,31 @@ const theme = createMuiTheme({
       fontFamily: 'Canela',
       fontSize: '2.5rem',
     },
+    h2: {
+      fontFamily: 'Canela',
+      fontSize: '1.75rem',
+    },
+    h3: {
+      fontFamily: 'Arial',
+      fontSize: '1.5rem',
+      textTransform: 'uppercase',
+    },
+    h4: {
+      fontFamily: 'Arial',
+      fontSize: '1.125rem',
+    },
+    h5: {
+      fontFamily: 'Arial',
+      fontSize: '1rem',
+    },
+    h6: {
+      fontFamily: 'Arial',
+      fontSize: '0.875rem',
+    },
+    body1: {
+      fontFamily: 'Arial',
+      fontSize: '1.125rem',
+    },
     subtitle1: {
       fontFamily: 'Arial',
       fontSize: '1.125rem',
