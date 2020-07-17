@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: '40px 44px 40px 44px',
+    padding: '40px 28px 40px 28px',
     [theme.breakpoints.up('md')]: {
       padding: '40px 20% 40px 20%',
     },

@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     height: '24px',
   },
   nameSkeleton: {
-    width: '40%',
+    width: '100px',
   }
 });
 
