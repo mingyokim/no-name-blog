@@ -27,32 +27,30 @@ const PartialBlog = ({
   const classes = useStyles();
   const date = new Date(createdAt);
   return (
-    <Grid item>
-      <Grid container spacing={0} direction="column">
-        <Grid item>
-          {loading
-            ? <Skeleton height={48} className={classes.titleSkeleton} />
-            : (
-              <Link
-                to={`/blogs/${url}`}
-                variant="h1"
-                component={RouterLink}
-                color="inherit"
-              >
-                {title}
-              </Link>
-            )}
-        </Grid>
-        {/* <Grid item>
-          {loading
-            ? <Skeleton height={32} className={classes.nameSkeleton} />
-            : <Typography variant="body2">{preview}</Typography>}
-        </Grid> */}
-        <Grid item>
-          {loading
-            ? <Skeleton height={32} width={100} />
-            : <Typography variant="subtitle1" color="textSecondary">{`${displayDate(date)} · ${author}`}</Typography>}
-        </Grid>
+    <Grid container spacing={0} direction="column">
+      <Grid item>
+        {loading
+          ? <Skeleton height={48} className={classes.titleSkeleton} />
+          : (
+            <Link
+              to={`/blogs/${url}`}
+              variant="h1"
+              component={RouterLink}
+              color="inherit"
+            >
+              {title}
+            </Link>
+          )}
+      </Grid>
+      {/* <Grid item>
+        {loading
+          ? <Skeleton height={32} className={classes.nameSkeleton} />
+          : <Typography variant="body2">{preview}</Typography>}
+      </Grid> */}
+      <Grid item>
+        {loading
+          ? <Skeleton height={32} width={100} />
+          : <Typography variant="subtitle1" color="textSecondary">{`${displayDate(date)} · ${author}`}</Typography>}
       </Grid>
     </Grid>
   );
@@ -75,10 +73,13 @@ PartialBlog.defaultProps = {
   url: '',
 };
 
-const PartialBlogsList = ({ loaded, partialBlogs }) => (
-  <Grid container spacing={2} direction="column">
-    {loaded
-      ? partialBlogs.map(({
+const PartialBlogsList = ({ loaded, partialBlogs }) => {
+  let content;
+  if (loaded) {
+    if (partialBlogs.length === 0) {
+      content = <Typography variant="body1" color="textSecondary">No blogs yet</Typography>;
+    } else {
+      content = partialBlogs.map(({
         id,
         author,
         title,
@@ -87,23 +88,30 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => (
         url,
       }) => (
         <>
-            <PartialBlog
-              key={id}
-              author={author}
-              title={title}
-              preview={preview}
-              createdAt={createdAt}
-              url={url}
-              loading={false}
-            />
+            <Grid item>
+              <PartialBlog
+                author={author}
+                title={title}
+                preview={preview}
+                createdAt={createdAt}
+                url={url}
+                loading={false}
+              />
+            </Grid>
             <Grid item>
               <Divider />
             </Grid>
           </>
-      ))
-      : <PartialBlog loading />}
-  </Grid>
-);
+      ));
+    }
+  }
+
+  return (
+    <Grid container spacing={2} direction="column">
+      {content}
+    </Grid>
+  );
+};
 
 PartialBlogsList.propTypes = {
   loaded: PropTypes.bool.isRequired,
