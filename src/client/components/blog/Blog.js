@@ -36,10 +36,10 @@ const Blog = ({
           <Grid item>
             <Grid container spacing={0} direction="column">
               <Grid item>
-                <Typography variant="subtitle2">{`By ${author}`}</Typography>
+                <Typography variant="subtitle2" color="textSecondary">{`By ${author}`}</Typography>
               </Grid>
               <Grid item>
-                <Typography variant="subtitle2">{displayDate(date)}</Typography>
+                <Typography variant="subtitle2" color="textSecondary">{displayDate(date)}</Typography>
               </Grid>
             </Grid>
           </Grid>

@@ -51,7 +51,7 @@ const PartialBlog = ({
         <Grid item>
           {loading
             ? <Skeleton height={32} width={100} />
-            : <Typography variant="subtitle1">{`${displayDate(date)} · ${author}`}</Typography>}
+            : <Typography variant="subtitle1" color="textSecondary">{`${displayDate(date)} · ${author}`}</Typography>}
         </Grid>
       </Grid>
     </Grid>
