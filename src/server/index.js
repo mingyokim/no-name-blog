@@ -268,6 +268,50 @@ app.post('/sessionLogin', (req, res) => {
     });
 });
 
+app.post('/api/v1/signup', (req, res) => {
+  const idToken = req.body.idToken.toString();
+  const { signUpToken } = req.body;
+  console.log('token:', signUpToken);
+  // Set session expiration to 5 days.
+  const expiresIn = 60 * 60 * 24 * 5 * 1000;
+  admin.auth().verifyIdToken(idToken)
+    .then(({ uid, email }) => {
+      const db = admin.firestore();
+      db.collection('signup_tokens').doc(signUpToken).get()
+        .then((doc) => {
+          if (doc.exists) {
+            admin.auth().createSessionCookie(idToken, { expiresIn })
+              .then((sessionCookie) => {
+                // console.log('session cookie:', sessionCookie);
+                // Set cookie policy for session cookie.
+                // const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+                const options = { maxAge: expiresIn };
+                res.cookie('session', sessionCookie, options);
+                return db.collection('authors').doc(email).set({});
+              })
+              .then(() => {
+                res.end(JSON.stringify({ status: 'success' }));
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(401).send('UNAUTHORIZED REQUEST!');
+              });
+          } else {
+            admin.auth().deleteUser(uid);
+            res.status(401).send('UNAUTHORIZED REQUEST!');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).send('server error');
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(401).send('UNAUTHORIZED REQUEST!');
+    });
+});
+
 
 app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
 app.get('*', router);

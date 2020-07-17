@@ -10,6 +10,7 @@ const Login = loadable(() => import('../client/components/writer/Login'));
 const RedirectToPageNotFound = loadable(() => import('../client/components/RedirectToPageNotFound'));
 const Logout = loadable(() => import('../client/containers/writer/Logout'));
 const NewBlog = loadable(() => import('../client/components/writer/NewBlog'));
+const SignUp = loadable(() => import('../client/containers/writer/SignUp'));
 
 const routes = [
   {
@@ -22,6 +23,10 @@ const routes = [
       {
         path: '/login',
         component: Login,
+      },
+      {
+        path: '/signup/:signUpToken',
+        component: SignUp,
       },
       {
         path: '/writer/new-blog',
