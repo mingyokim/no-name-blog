@@ -77,7 +77,13 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => {
   let content;
   if (loaded) {
     if (partialBlogs.length === 0) {
-      content = <Typography variant="body1" color="textSecondary">No blogs yet</Typography>;
+      content = (
+        <Grid item>
+          <Typography variant="body1" color="textSecondary">
+            No blogs yet
+          </Typography>
+        </Grid>
+      );
     } else {
       content = partialBlogs.map(({
         id,
@@ -104,6 +110,12 @@ const PartialBlogsList = ({ loaded, partialBlogs }) => {
           </>
       ));
     }
+  } else {
+    content = (
+      <Grid item>
+        <PartialBlog loading />
+      </Grid>
+    );
   }
 
   return (
