@@ -37,18 +37,22 @@ const theme = createMuiTheme({
       fontFamily: 'Arial',
       fontSize: '1.5rem',
       textTransform: 'uppercase',
+      fontWeight: 'bold',
     },
     h4: {
       fontFamily: 'Arial',
       fontSize: '1.125rem',
+      fontWeight: 'bold',
     },
     h5: {
       fontFamily: 'Arial',
       fontSize: '1rem',
+      fontWeight: 'bold',
     },
     h6: {
       fontFamily: 'Arial',
       fontSize: '0.875rem',
+      fontWeight: 'bold',
     },
     body1: {
       fontFamily: 'Arial',
