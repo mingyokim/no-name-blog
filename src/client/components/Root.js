@@ -7,13 +7,14 @@ import Container from '@material-ui/core/Container';
 const useStyles = makeStyles(() => ({
   root: {
     padding: '40px 28px 40px 28px',
+    overflowX: 'hidden',
   },
 }));
 
 const Root = ({ route }) => {
   const classes = useStyles();
   return (
-    <Container className={classes.root} maxWidth="md" style={{ overflowX: "hidden" }}>
+    <Container className={classes.root} maxWidth="md">
       {renderRoutes(route.routes)}
     </Container>
   );
