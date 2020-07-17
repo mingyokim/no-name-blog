@@ -86,7 +86,7 @@ const AuthorsList = ({
     return (
       <Grid container spacing={2}>
         {authors.map(({ display_name: displayName, photo_URL: photoURL, id }) => (
-          <Grid item key={id}>
+          <Grid item key={id} xs="auto" md={12}>
             <Author
               displayName={displayName}
               photoURL={photoURL}
