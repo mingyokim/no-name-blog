@@ -14,17 +14,36 @@ const BlogRoute = ({
 }) => (
   <Grid container spacing={10} direction="column">
     <Grid item>
-      <Link
-        to="/"
-        variant="h1"
-        component={RouterLink}
-        color="textSecondary"
-      >
-        Blog
-      </Link>
+      <Grid container spacing={6}>
+        <Grid item xs={12} md={3} />
+        <Grid item xs={12} md={9}>
+          <Link
+            to="/"
+            variant="h1"
+            component={RouterLink}
+            color="textSecondary"
+          >
+            Blog
+          </Link>
+        </Grid>
+      </Grid>
     </Grid>
     <Grid item>
-      <BlogURL currentBlogURL={currentBlogURL} />
+      <Grid container spacing={6}>
+        <Grid item xs={12} md={3}>
+          <Link
+            to="/"
+            variant="overline"
+            component={RouterLink}
+            color="textSecondary"
+          >
+            ← back
+          </Link>
+        </Grid>
+        <Grid item xs={12} md={9}>
+          <BlogURL currentBlogURL={currentBlogURL} />
+        </Grid>
+      </Grid>
     </Grid>
   </Grid>
 );

@@ -69,6 +69,11 @@ const theme = createMuiTheme({
     subtitle2: {
       fontFamily: 'Arial',
       fontSize: '1.125rem',
+    },
+    overline: {
+      fontWeight: 'bold',
+      fontFamily: 'Arial',
+      fontSize: '0.875rem'
     }
   },
   overrides: {
