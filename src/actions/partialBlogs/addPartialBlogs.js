@@ -1,8 +1,9 @@
 import { ADD_PARTIAL_BLOGS } from '../actionTypes';
 
-const addPartialBlogs = partialBlogs => ({
+const addPartialBlogs = (partialBlogs, filter = 'all') => ({
   type: ADD_PARTIAL_BLOGS,
-  partialBlogs
+  partialBlogs,
+  filter,
 });
 
 export default addPartialBlogs;

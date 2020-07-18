@@ -8,20 +8,32 @@ import loadPartialBlogsAction from '../../../actions/partialBlogs/loadPartialBlo
 import addBlogURLsAction from '../../../actions/blogURLs/addBlogURLs';
 import PartialBlogsListComponent from '../../components/blog/PartialBlogsList';
 
+const getFilter = ({ isFilterOn, userId }) => {
+  if (isFilterOn) return userId;
+  return 'all';
+};
+
+const needsFetching = (partialBlogsByFilter, filter) => {
+  if (!(filter in partialBlogsByFilter)) return true;
+  const { loaded } = partialBlogsByFilter[filter];
+  return !loaded;
+};
+
 class PartialBlogsList extends React.Component {
   componentDidMount() {
     const {
-      partialBlogs: {
-        loaded
-      },
+      authorFilter,
+      partialBlogsByFilter,
       addPartialBlogs,
       addBlogURLs,
     } = this.props;
 
-    if (!loaded) {
-      axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs } }) => {
-        addPartialBlogs(partialBlogs);
-        addBlogURLs(partialBlogs);
+    const filter = getFilter(authorFilter);
+
+    if (needsFetching(partialBlogsByFilter, filter)) {
+      axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs: loadedBlogs } }) => {
+        addPartialBlogs(loadedBlogs, filter);
+        addBlogURLs(loadedBlogs);
       }).catch((err) => {
         console.log(err);
       });
@@ -31,9 +43,11 @@ class PartialBlogsList extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       authorFilter: {
-        isFilterOn,
+        isFilterOn: newIsFilterOn,
         userId: newUserId,
       },
+      authorFilter,
+      partialBlogsByFilter,
       updatePartialBlogs,
       loadPartialBlogs,
       addBlogURLs,
@@ -42,48 +56,62 @@ class PartialBlogsList extends React.Component {
     const {
       authorFilter: {
         userId: prevUserId,
+        isFilterOn: prevIsFilterOn,
       }
     } = prevProps;
 
-    if (newUserId !== prevUserId) {
-      loadPartialBlogs();
-      if (isFilterOn) {
-        axios.get('/api/v1/partial-blogs', {
+    if (newIsFilterOn === prevIsFilterOn && newUserId === prevUserId) {
+      return;
+    }
+
+    const filter = getFilter(authorFilter);
+
+    if (needsFetching(partialBlogsByFilter, filter)) {
+      loadPartialBlogs(filter);
+      let promise;
+      if (newIsFilterOn) {
+        promise = axios.get('/api/v1/partial-blogs', {
           params: {
             author_id: newUserId,
           }
-        }).then(({ data: { partialBlogs } }) => {
-          updatePartialBlogs(partialBlogs);
-          addBlogURLs(partialBlogs);
-        }).catch((err) => {
-          console.log(err);
         });
       } else {
-        axios.get('/api/v1/partial-blogs/').then(({ data: { partialBlogs } }) => {
-          updatePartialBlogs(partialBlogs);
-        }).catch((err) => {
+        promise = axios.get('/api/v1/partial-blogs/');
+      }
+
+      promise
+        .then(({ data: { partialBlogs: newPartialBlogs } }) => {
+          updatePartialBlogs(newPartialBlogs, filter);
+          addBlogURLs(newPartialBlogs);
+        })
+        .catch((err) => {
           console.log(err);
         });
-      }
     }
   }
 
   render() {
     const {
-      partialBlogs: {
-        loaded,
-        data: partialBlogs
-      },
+      partialBlogsByFilter,
+      authorFilter,
     } = this.props;
 
+    const filter = getFilter(authorFilter);
+
+    if (needsFetching(partialBlogsByFilter, filter)) {
+      return <PartialBlogsListComponent loaded={false} partialBlogs={[]} />;
+    }
+
+    const { data: partialBlogs } = partialBlogsByFilter[filter];
+
     return (
-      <PartialBlogsListComponent loaded={loaded} partialBlogs={partialBlogs} />
+      <PartialBlogsListComponent loaded partialBlogs={partialBlogs} />
     );
   }
 }
 
 PartialBlogsList.propTypes = {
-  partialBlogs: PropTypes.shape({
+  partialBlogsByFilter: PropTypes.objectOf(PropTypes.shape({
     loaded: PropTypes.bool,
     data: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
@@ -93,7 +121,7 @@ PartialBlogsList.propTypes = {
       createdAt: PropTypes.string,
       url: PropTypes.string,
     })),
-  }).isRequired,
+  })).isRequired,
   addPartialBlogs: PropTypes.func.isRequired,
   updatePartialBlogs: PropTypes.func.isRequired,
   loadPartialBlogs: PropTypes.func.isRequired,
@@ -104,15 +132,17 @@ PartialBlogsList.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = ({ partialBlogs, authorFilter }) => ({
-  partialBlogs,
+const mapStateToProps = ({ partialBlogsByFilter, authorFilter }) => ({
+  partialBlogsByFilter,
   authorFilter
 });
 
 const mapDispatchToProps = dispatch => ({
-  addPartialBlogs: partialBlogs => dispatch(addPartialBlogsAction(partialBlogs)),
-  updatePartialBlogs: partialBlogs => dispatch(updatePartialBlogsAction(partialBlogs)),
-  loadPartialBlogs: () => dispatch(loadPartialBlogsAction()),
+  addPartialBlogs: (partialBlogs, filter) => dispatch(addPartialBlogsAction(partialBlogs, filter)),
+  updatePartialBlogs: (partialBlogs, filter) => dispatch(
+    updatePartialBlogsAction(partialBlogs, filter)
+  ),
+  loadPartialBlogs: filter => dispatch(loadPartialBlogsAction(filter)),
   addBlogURLs: partialBlogs => dispatch(addBlogURLsAction(partialBlogs))
 });
 

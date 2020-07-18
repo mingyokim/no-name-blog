@@ -1,8 +1,9 @@
 import { UPDATE_PARTIAL_BLOGS } from '../actionTypes';
 
-const updatePartialBlogs = partialBlogs => ({
+const updatePartialBlogs = (partialBlogs, filter = 'all') => ({
   type: UPDATE_PARTIAL_BLOGS,
-  partialBlogs
+  partialBlogs,
+  filter,
 });
 
 export default updatePartialBlogs;
