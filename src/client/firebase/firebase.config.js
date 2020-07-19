@@ -25,3 +25,8 @@ const firebaseConfig = {
 };
 
 export default firebaseConfig[process.env.NODE_ENV];
+// console.log(process.env.FB_CLIENT);
+
+// const config = JSON.parse(process.env.FB_CLIENT);
+
+// export default config;

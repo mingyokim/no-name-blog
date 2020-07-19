@@ -2,7 +2,7 @@ import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import CssBaseline from '@material-ui/core/CssBaseline';
 // import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import loadable from '@loadable/component';
+// import loadable from '@loadable/component';
 
 // import { Provider } from 'react-redux';
 // import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
@@ -10,7 +10,7 @@ import loadable from '@loadable/component';
 // import * as firebase from 'firebase/app';
 import routes from '../../routes';
 // import { FirebaseContext, firebaseConfig } from './firebase';
-const FirebaseProvider = loadable(() => import('../firebase/FirebaseProvider'));
+// const FirebaseProvider = loadable(() => import('../firebase/FirebaseProvider'));
 
 // const theme = createMuiTheme({
 //   palette: {
@@ -62,10 +62,10 @@ const FirebaseProvider = loadable(() => import('../firebase/FirebaseProvider'));
 // }
 
 const App = () => (
-  <FirebaseProvider>
+  <>
     <CssBaseline />
     {renderRoutes(routes)}
-  </FirebaseProvider>
+  </>
 );
 
 export default App;
