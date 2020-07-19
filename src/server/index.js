@@ -34,12 +34,21 @@ app.use(bodyParser.urlencoded({
 
 app.get('/api/v1/partial-blogs', (req, res) => {
   const db = admin.firestore();
-  let partialBlogsRef = db.collection('blogs_partial');
+  let partialBlogsRef = db.collection('blogs_partial').orderBy('createdAt', 'desc');
   const authorId = req.query.author_id;
   if (authorId) {
     partialBlogsRef = partialBlogsRef.where('authorId', '=', authorId);
   }
-  partialBlogsRef.orderBy('createdAt', 'desc').get().then((snapshot) => {
+  const { limit } = req.query;
+  if (limit) {
+    partialBlogsRef = partialBlogsRef.limit(parseInt(limit, 10));
+  }
+  const { startAfter } = req.query;
+  if (startAfter) {
+    const startAfterTimestamp = admin.firestore.Timestamp.fromDate(new Date(startAfter));
+    partialBlogsRef = partialBlogsRef.startAfter(startAfterTimestamp);
+  }
+  partialBlogsRef.get().then((snapshot) => {
     const partialBlogs = snapshot.docs.map((doc) => {
       // console.log(doc.id, '=>', doc.data());
       const data = doc.data();

@@ -14,7 +14,7 @@ const partialBlogsByFilter = (state = initialState, action) => {
       return Object.assign({}, state, {
         [filter]: {
           loaded: true,
-          data: (filter in newPartialBlogs ? newPartialBlogs[filter].data : [])
+          data: (filter in state ? state[filter].data : [])
             .concat(newPartialBlogs),
         }
       });
