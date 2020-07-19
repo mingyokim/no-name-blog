@@ -6,6 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/styles';
+import Typography from '@material-ui/core/Typography';
 
 import addPartialBlogsAction from '../../../actions/partialBlogs/addPartialBlogs';
 import updatePartialBlogsAction from '../../../actions/partialBlogs/updatePartialBlogs';
@@ -31,7 +32,7 @@ const needsFetching = (partialBlogsByFilter, filter) => {
   return !loaded;
 };
 
-const BATCH_SIZE = 6;
+const BATCH_SIZE = 8;
 
 class PartialBlogsList extends React.Component {
   constructor(props) {
@@ -170,6 +171,10 @@ class PartialBlogsList extends React.Component {
     }
 
     const { data: partialBlogs } = partialBlogsByFilter[filter];
+
+    if (partialBlogs.length === 0) {
+      return <Typography variant="body1" color="textSecondary">No blogs yet</Typography>;
+    }
 
     return (
       <InfiniteScroll
