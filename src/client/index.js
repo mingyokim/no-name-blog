@@ -7,6 +7,9 @@ import { loadableReady } from '@loadable/component';
 import throttle from 'lodash/throttle';
 import { ThemeProvider } from '@material-ui/core/styles';
 
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+
 import App from './components/App';
 import blogApp from '../reducers';
 import { loadState, saveState } from './storage/localStorage';
@@ -43,13 +46,15 @@ const Main = () => {
     }
   }, []);
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
+    <FirebaseProvider value={}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </BrowserRouter>
+      </Provider>
+    </FirebaseProvider>
   );
 };
 
