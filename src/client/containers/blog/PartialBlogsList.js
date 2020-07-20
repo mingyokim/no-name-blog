@@ -65,6 +65,8 @@ class PartialBlogsList extends React.Component {
       }).catch((err) => {
         console.log(err);
       });
+    } else {
+      this.setState({ hasMore: false });
     }
   }
 
@@ -193,7 +195,7 @@ class PartialBlogsList extends React.Component {
             createdAt,
             url,
           }) => (
-            <>
+              <>
                 <Grid item>
                   <PartialBlog
                     author={author}
@@ -207,7 +209,7 @@ class PartialBlogsList extends React.Component {
                   <Divider />
                 </Grid>
               </>
-          ))}
+            ))}
         </Grid>
       </InfiniteScroll>
     );
