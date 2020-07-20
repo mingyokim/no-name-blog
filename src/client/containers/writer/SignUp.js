@@ -7,7 +7,7 @@ import * as fb from 'firebase/app';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { FirebaseContext } from '../../firebase';
+import FirebaseContext from '../../firebase/firebaseContext';
 
 import addAuthorAction from '../../../actions/author/addAuthor';
 

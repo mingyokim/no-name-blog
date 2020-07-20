@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { FirebaseContext } from '../../firebase';
+import FirebaseContext from '../../firebase/firebaseContext';
 import addAuthorAction from '../../../actions/author/addAuthor';
 
 class Login extends React.Component {
