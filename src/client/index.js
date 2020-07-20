@@ -14,9 +14,9 @@ import App from './components/App';
 import blogApp from '../reducers';
 import { loadState, saveState } from './storage/localStorage';
 import theme from '../theme';
-import FirebaseProvider from './firebase/FirebaseProvider';
+import FirebaseContext from './firebase/firebaseContext';
 
-console.log(FB_CLIENT);
+firebase.initializeApp(FB_CLIENT);
 
 // Scrapping preloaded state: just load the stuff in client side only
 // Grab the state from a global variable injected into the server-generated HTML
@@ -46,7 +46,7 @@ const Main = () => {
     }
   }, []);
   return (
-    <FirebaseProvider value={}>
+    <FirebaseContext.Provider value={firebase}>
       <Provider store={store}>
         <BrowserRouter>
           <ThemeProvider theme={theme}>
@@ -54,7 +54,7 @@ const Main = () => {
           </ThemeProvider>
         </BrowserRouter>
       </Provider>
-    </FirebaseProvider>
+    </FirebaseContext.Provider>
   );
 };
 
