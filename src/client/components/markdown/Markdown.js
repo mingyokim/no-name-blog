@@ -83,6 +83,7 @@ const options = () => {
         }
       },
       p: { component: Typography, props: { paragraph: true, variant: 'body1' } },
+      span: { component: Typography, props: { variant: 'body1' } },
       a: { component: Link },
       li: {
         component: props => (
