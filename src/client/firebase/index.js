@@ -1,9 +1,9 @@
-import FirebaseContext from './firebaseContext';
-import firebaseConfig from './firebase.config';
-import FirebaseProvider from './FirebaseProvider';
+import * as firebase from 'firebase';
+import 'firebase/auth';
 
-export {
-  FirebaseContext,
-  firebaseConfig,
-  FirebaseProvider,
-};
+// console.log(FB_CLIENT);
+// console.log(JSON.parse(FB_CLIENT));
+
+firebase.initializeApp(JSON.parse(FB_CLIENT));
+
+export default firebase;
