@@ -1,6 +1,7 @@
 import * as firebase from 'firebase';
 import 'firebase/auth';
 
+console.log(FB_CLIENT);
 console.log(JSON.parse(FB_CLIENT));
 
 // let config = {
