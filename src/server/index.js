@@ -62,7 +62,7 @@ app.get('/api/v1/partial-blogs', (req, res) => {
   })
     .catch((err) => {
       console.log(err);
-      res.status(404).send('server error');
+      res.status(404).send(JSON.stringify(err));
     });
 });
 
