@@ -1,24 +1,24 @@
 import { router, renderWithState } from './router';
 import { titleToURL } from './helper';
 
-require('dotenv').config();
+// require('dotenv').config();
 const favicon = require('serve-favicon');
 const path = require('path');
 
 // console.log('firebase config:', process.env.FIREBASE_CONFIG);
-const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
+// const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 // console.log('service account:', serviceAccount);
 
 // Initialize the default app
 const admin = require('firebase-admin');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: process.env.FIREBASE_DATABASE_URL,
+// });
+admin.initializeApp();
 
 const express = require('express');
-const os = require('os');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -322,8 +322,6 @@ app.post('/api/v1/signup', (req, res) => {
     });
 });
 
-
-app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
 app.get('*', router);
 
 const defaultPort = 8000;

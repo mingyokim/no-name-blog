@@ -5,7 +5,7 @@
   "main": "src/server/index.js",
   "scripts": {
     "build": "webpack --mode production --env.FB_CLIENT=\"$FB_CLIENT\" && babel ./src -d ./build",
-    "build:firebase": "webpack --mode production --env.FB_CLIENT=\"FB_CLIENT\" && babel ./src -d ./functions/build",
+    "build:firebase": "webpack --mode production --env.FB_CLIENT=\"$FB_CLIENT\" && babel ./src -d ./functions/build",
     "start": "npm run build && NODE_ENV=production node ./build/server/index.js",
     "client": "webpack --mode development --config ./webpack.config.js/ --env.FB_CLIENT=\"$FB_CLIENT\" --watch",
     "server": "nodemon  --signal SIGINT --exec babel-node src/server/index.js --watch src",
