@@ -7,7 +7,7 @@
 
 ## Introduction
 
-This repo contains the front-end and back-end for a blog, without the database. It's meant to work with any Firebase project, as long as you supply the configuration of your Firebase project through environment variables. The blog was designed by [Fiona Yang](http://fionayang.me/).
+This repo contains the front-end and back-end for a blog, without the database. You can use this repo to create your own blog, as long as you create your own Firebase project (which acts like a database) - you just need to supply the configuration of your Firebase project through environment variables. The blog was designed by [Fiona Yang](http://fionayang.me/). If you're just interesting in hosting your own blog, go straight to the [Production mode section](#production-mode).
 
 ### Setting up a firebase project
 This blog's database is powered by Firebase. To host your own blog, create a Firebase project. When created, go to the Authentication tab > Sign-in methods, and enable Google provider. So far this blog only supports authentication with Google.
