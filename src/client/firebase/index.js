@@ -1,17 +1,8 @@
 import * as firebase from 'firebase';
 import 'firebase/auth';
 
-console.log(FB_CLIENT);
-console.log(JSON.parse(FB_CLIENT));
-
-// let config = {
-//     apiKey: "XXXXXXX",
-//     authDomain: "XXXXX",
-//     databaseURL: "XXXXX",
-//     projectId: "XXXXX",
-//     storageBucket: "XXXX",
-//     messagingSenderId: "XXXX"
-// };
+// console.log(FB_CLIENT);
+// console.log(JSON.parse(FB_CLIENT));
 
 firebase.initializeApp(JSON.parse(FB_CLIENT));
 

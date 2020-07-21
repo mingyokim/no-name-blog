@@ -7,9 +7,6 @@ import { loadableReady } from '@loadable/component';
 import throttle from 'lodash/throttle';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-// import * as firebase from 'firebase/app';
-// import 'firebase/auth';
-
 import App from './components/App';
 import blogApp from '../reducers';
 import { loadState, saveState } from './storage/localStorage';
@@ -17,11 +14,7 @@ import theme from '../theme';
 import FirebaseContext from './firebase/firebaseContext';
 import Firebase from './firebase';
 
-console.log('fb client:', FB_CLIENT);
-
-// firebase.initializeApp(FB_CLIENT);
-
-// console.log('fb:', firebase);
+// console.log('fb client:', FB_CLIENT);
 
 // Scrapping preloaded state: just load the stuff in client side only
 // Grab the state from a global variable injected into the server-generated HTML
@@ -68,5 +61,3 @@ const renderRouter = (Component) => {
 };
 
 loadableReady(() => renderRouter(Main));
-
-// ReactDOM.render(<App />, document.getElementById('root'));
