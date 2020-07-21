@@ -7,7 +7,7 @@ const canela = {
   fontWeight: 400,
   src: `
   local('Canela'),
-  url('../../public/fonts/Canela-Regular.otf')
+  url('/public/Canela-Regular.otf')
 `,
 };
 
