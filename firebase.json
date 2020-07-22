@@ -1,14 +1,15 @@
 {
   "functions": {
     "predeploy": [
+      "rm -rf ./functions/dist",
+      "rm -rf ./dist",
       "./predeploy.sh",
       "cp -r ./public ./functions/public",
-      "rm -rf ./functions/dist",
       "cp -r ./dist ./functions/dist"
     ]
   },
   "hosting": {
-    "public": "src/server/public",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
