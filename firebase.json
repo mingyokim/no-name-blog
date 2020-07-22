@@ -1,8 +1,9 @@
 {
   "functions": {
     "predeploy": [
-      "npm run build:firebase",
+      "./predeploy.sh",
       "cp -r ./public ./functions/public",
+      "rm -rf ./functions/dist",
       "cp -r ./dist ./functions/dist"
     ]
   },
