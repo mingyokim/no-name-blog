@@ -3,7 +3,7 @@
     "predeploy": [
       "npm run build:firebase",
       "cp -r ./public ./functions/public",
-      "cp -r ./dist ./functions/public"
+      "cp -r ./dist ./functions/dist"
     ]
   },
   "hosting": {
