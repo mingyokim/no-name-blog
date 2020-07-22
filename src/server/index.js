@@ -12,19 +12,19 @@ const path = require('path');
 // Initialize the default app
 const admin = require('firebase-admin');
 
+admin.initializeApp();
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
 //   databaseURL: process.env.FIREBASE_DATABASE_URL,
 // });
-admin.initializeApp();
 
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const app = express();
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', '..', 'dist')));
+app.use('/public', express.static(path.join(__dirname, '..', '..', 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(cookieParser());
 app.use(bodyParser.json());

@@ -28,7 +28,7 @@ module.exports = (env) => {
       client: './client/index.js',
     },
     output: {
-      path: path.join(__dirname, 'src', 'server', outputDirectory),
+      path: path.join(__dirname, outputDirectory),
       filename: '[name].bundle.js',
       publicPath: '/'
       // filename: 'bundle.js'
