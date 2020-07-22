@@ -2,7 +2,8 @@
   "functions": {
     "predeploy": [
       "npm run build:firebase",
-      "cp -r ./src/server/public ./functions/build/server/public"
+      "cp -r ./src/server/public ./functions/build/server/public",
+      "cp ./src/server/dist/loadable-stats.json ./functions/build/server/dist"
     ]
   },
   "hosting": {
