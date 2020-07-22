@@ -1,22 +1,25 @@
 import { router, renderWithState } from './router';
 import { titleToURL } from './helper';
 
-// require('dotenv').config();
+require('dotenv').config();
 const favicon = require('serve-favicon');
 const path = require('path');
-
-// console.log('firebase config:', process.env.FIREBASE_CONFIG);
-// const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
-// console.log('service account:', serviceAccount);
 
 // Initialize the default app
 const admin = require('firebase-admin');
 
-admin.initializeApp();
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: process.env.FIREBASE_DATABASE_URL,
-// });
+// process.env.FIREBASE_CONFIG is defined when using Firebase Hosting
+if (process.env.FIREBASE_CONFIG) {
+  // Firebase hosting provides the service account credentials internally
+  admin.initializeApp();
+} else {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+  });
+}
+
 
 const express = require('express');
 const cookieParser = require('cookie-parser');
