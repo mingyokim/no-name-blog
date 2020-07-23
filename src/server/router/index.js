@@ -25,7 +25,6 @@ const renderFullPage = (app, css, preloadedState, scriptTags) => `
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bloggo</title>
     <style id="jss-server-side">${css}</style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
   </head>
 
   <body>
