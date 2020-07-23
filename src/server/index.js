@@ -1,7 +1,6 @@
 import { router, renderWithState } from './router';
 import { titleToURL } from './helper';
 
-require('dotenv').config();
 const favicon = require('serve-favicon');
 const path = require('path');
 
@@ -13,6 +12,7 @@ if (process.env.FIREBASE_CONFIG) {
   // Firebase hosting provides the service account credentials internally
   admin.initializeApp();
 } else {
+  require('dotenv').config();
   const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
