@@ -1,0 +1,25 @@
+{
+  "functions": {
+    "predeploy": [
+      "rm -rf ./functions/dist",
+      "rm -rf ./dist",
+      "./predeploy.sh",
+      "cp -r ./public ./functions/public",
+      "cp -r ./dist ./functions/dist"
+    ]
+  },
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "app"
+      }
+    ]
+  }
+}

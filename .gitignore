@@ -6,3 +6,4 @@ build
 yarn.lock
 .node-version
 .env
+functions/public

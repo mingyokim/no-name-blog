@@ -1,30 +1,34 @@
 import { router, renderWithState } from './router';
 import { titleToURL } from './helper';
 
-require('dotenv').config();
 const favicon = require('serve-favicon');
 const path = require('path');
-
-// console.log('firebase config:', process.env.FIREBASE_CONFIG);
-const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
-// console.log('service account:', serviceAccount);
 
 // Initialize the default app
 const admin = require('firebase-admin');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-});
+// process.env.FIREBASE_CONFIG is defined when using Firebase Hosting
+if (process.env.FIREBASE_CONFIG) {
+  // Firebase hosting provides the service account credentials internally
+  admin.initializeApp();
+} else {
+  require('dotenv').config();
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+  });
+}
+
 
 const express = require('express');
-const os = require('os');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const app = express();
-app.use(express.static('dist'));
-app.use(favicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')));
+app.use(express.static(path.join(__dirname, '..', '..', 'dist')));
+app.use('/public', express.static(path.join(__dirname, '..', '..', 'public')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 // Support URL-encoded bodies.
@@ -321,10 +325,10 @@ app.post('/api/v1/signup', (req, res) => {
     });
 });
 
-
-app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
 app.get('*', router);
 
 const defaultPort = 8000;
 
 app.listen(process.env.PORT || defaultPort, () => console.log(`Listening on port ${process.env.PORT || defaultPort}!`));
+
+export default app;

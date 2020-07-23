@@ -27,7 +27,7 @@ In the development mode, we will have 2 servers running. The front end code will
 You will also need to set some environment variables. Go to your terminal and define a `FB_CLIENT` environment variable. It represents the configuration for firebase client - which you can obtain by pressing the gear button on the left panel on your Firebase console > Project Settings.
 
 ```
-export FB_CLIENT="{
+export FB_CLIENT_DEV="{
   \"apiKey\": \"xxx\",
   \"authDomain\": \"xxx.firebaseapp.com\",
   \"databaseURL\": \"https://xxx.firebaseio.com\",
@@ -41,7 +41,7 @@ export FB_CLIENT="{
 You should also make a `.env` file at the root of this project. It should contain the following environment variables:
 
 - `PORT`: The port where this project will run locally. If `PORT` is 8000, then you would go to `localhost:8000` to see your project running.
-- `FIREBASE_CONFIG`: The service account secret of your Firebase project. Go to your console > Settings > Service Accounts, then click "Generate new private key" button. It should start downloading a json file, and you can just copy paste the content to the `.env` file.
+- `FIREBASE_SERVICE_ACCOUNT`: The service account secret of your Firebase project. Go to your console > Settings > Service Accounts, then click "Generate new private key" button. It should start downloading a json file, and you can just copy paste the content to the `.env` file.
 - `FIREBASE_DATABASE_URL`: This is the same as `databaseURL` in the Firebase client configuration from the previous step.
 
 ```
@@ -75,10 +75,14 @@ If you want to keep your development and production databases separate from each
 Which ever deployment method you use, make sure to define the same environment variables as we did in the local environment. To recap, you should define the following (the values for firebase environment variables will be different if you're using a separate firebase instance for production):
 
 - `PORT` (should be `80`)
-- `FIREBASE_CONFIG`
+- `FIREBASE_SERVICE_ACCOUNT`
 - `FIREBASE_DATABASE_URL`
-- `FB_CLIENT`
+- `FB_CLIENT_PROD` (the web configuration for firebase project being used for production environment)
 
 I used Heroku to deploy my app. You can define environment variables for your server by going to Settings > Config vars.
 
 Furthermore, you have to whitelist the domain of your production server in Firebase. Go to your console > Authentication > Sign-in Method. Scroll down to "Authorized domains" section and add your domain (e.g. my-blog.herokuapp.com)
+
+### Firebase Hosting
+
+Login to your firebase account `firebase login`. Then select a firebase project you want to use for your production environment using `firebase use` ((link for more details)[https://firebase.google.com/docs/cli#project_aliases]). Then run `firebase deploy` to deploy your app!
