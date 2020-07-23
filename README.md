@@ -82,3 +82,7 @@ Which ever deployment method you use, make sure to define the same environment v
 I used Heroku to deploy my app. You can define environment variables for your server by going to Settings > Config vars.
 
 Furthermore, you have to whitelist the domain of your production server in Firebase. Go to your console > Authentication > Sign-in Method. Scroll down to "Authorized domains" section and add your domain (e.g. my-blog.herokuapp.com)
+
+### Firebase Hosting
+
+Login to your firebase account `firebase login`. Then select a firebase project you want to use for your production environment using `firebase use` ((link for more details)[https://firebase.google.com/docs/cli#project_aliases]). Then run `firebase deploy` to deploy your app!
