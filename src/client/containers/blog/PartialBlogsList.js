@@ -208,6 +208,7 @@ class PartialBlogsList extends React.Component {
 PartialBlogsList.propTypes = {
   partialBlogsByFilter: PropTypes.objectOf(PropTypes.shape({
     loaded: PropTypes.bool,
+    hasMore: PropTypes.bool,
     data: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
       author: PropTypes.string,
@@ -234,9 +235,9 @@ const mapStateToProps = ({ partialBlogsByFilter, authorFilter }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addPartialBlogs: (partialBlogs, filter) => dispatch(addPartialBlogsAction(partialBlogs, filter)),
-  updatePartialBlogs: (partialBlogs, filter) => dispatch(
-    updatePartialBlogsAction(partialBlogs, filter)
+  addPartialBlogs: ({ partialBlogs, filter, hasMore }) => dispatch(addPartialBlogsAction({ partialBlogs, filter, hasMore })),
+  updatePartialBlogs: ({ partialBlogs, filter, hasMore }) => dispatch(
+    updatePartialBlogsAction({ partialBlogs, filter, hasMore })
   ),
   loadPartialBlogs: filter => dispatch(loadPartialBlogsAction(filter)),
   addBlogURLs: partialBlogs => dispatch(addBlogURLsAction(partialBlogs))
