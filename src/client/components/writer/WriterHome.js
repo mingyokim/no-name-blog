@@ -2,23 +2,31 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 import Navbar from '../../containers/writer/Navbar';
+import PartialBlogsList from '../../containers/writer/AuthorPartialBlogsList';
 
 const WriterHome = () => (
-  <Grid container direction="column" alignItems="flex-end" spacing={10}>
+  <Grid container direction="column" spacing={10}>
     <Grid item>
       <Navbar />
     </Grid>
     <Grid item>
-      <Button
-        variant="outlined"
-        color="primary"
-        component={Link}
-        to="/writer/new-blog"
-      >
-        Create a blog
-      </Button>
+      <Grid container justify="space-between">
+        <Typography variant="h1">Your blogs</Typography>
+        <Button
+          variant="outlined"
+          color="primary"
+          component={Link}
+          to="/writer/new-blog"
+        >
+          Create a blog
+        </Button>
+      </Grid>
+    </Grid>
+    <Grid item>
+      <PartialBlogsList />
     </Grid>
   </Grid>
 );
