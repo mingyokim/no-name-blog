@@ -35,13 +35,6 @@ const needsFetching = (partialBlogsByFilter, filter) => {
 const BATCH_SIZE = 8;
 
 class PartialBlogsList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasMore: true,
-    };
-  }
-
   componentDidMount() {
     const {
       authorFilter,
@@ -59,14 +52,11 @@ class PartialBlogsList extends React.Component {
         }
       }).then(({ data: { partialBlogs: loadedBlogs } }) => {
         const hasMore = loadedBlogs.length === BATCH_SIZE;
-        this.setState({ hasMore });
-        updatePartialBlogs(loadedBlogs, filter);
+        updatePartialBlogs({ partialBlogs: loadedBlogs, filter, hasMore });
         addBlogURLs(loadedBlogs);
       }).catch((err) => {
         console.log(err);
       });
-    } else {
-      this.setState({ hasMore: false });
     }
   }
 
@@ -107,11 +97,10 @@ class PartialBlogsList extends React.Component {
       }
 
       axios.get('/api/v1/partial-blogs', { params })
-        .then(({ data: { partialBlogs: newPartialBlogs } }) => {
-          updatePartialBlogs(newPartialBlogs, filter);
-          addBlogURLs(newPartialBlogs);
-          const hasMore = newPartialBlogs.length === BATCH_SIZE;
-          this.setState({ hasMore });
+        .then(({ data: { partialBlogs } }) => {
+          const hasMore = partialBlogs.length === BATCH_SIZE;
+          updatePartialBlogs({ partialBlogs, filter, hasMore });
+          addBlogURLs(partialBlogs);
         })
         .catch((err) => {
           console.log(err);
@@ -149,8 +138,7 @@ class PartialBlogsList extends React.Component {
     axios.get('api/v1/partial-blogs', { params })
       .then(({ data: { partialBlogs: loadedBlogs } }) => {
         const hasMore = loadedBlogs.length === BATCH_SIZE;
-        this.setState({ hasMore });
-        addPartialBlogs(loadedBlogs, filter);
+        addPartialBlogs({ partialBlogs: loadedBlogs, filter, hasMore });
         addBlogURLs(loadedBlogs);
       }).catch((err) => {
         console.log(err);
@@ -164,15 +152,16 @@ class PartialBlogsList extends React.Component {
       classes,
     } = this.props;
 
-    const { hasMore } = this.state;
-
     const filter = getFilter(authorFilter);
 
     if (needsFetching(partialBlogsByFilter, filter)) {
       return <Loading />;
     }
 
-    const { data: partialBlogs } = partialBlogsByFilter[filter];
+    const {
+      data: partialBlogs,
+      hasMore,
+    } = partialBlogsByFilter[filter];
 
     if (partialBlogs.length === 0) {
       return <Typography variant="body1" color="textSecondary">No blogs yet</Typography>;

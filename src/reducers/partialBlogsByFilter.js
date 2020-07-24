@@ -4,11 +4,12 @@ const initialState = {
   all: {
     loaded: false,
     data: [],
+    hasMore: true,
   },
 };
 
 const partialBlogsByFilter = (state = initialState, action) => {
-  const { type, partialBlogs: newPartialBlogs, filter } = action;
+  const { type, partialBlogs: newPartialBlogs, filter, hasMore } = action;
   switch (type) {
     case ADD_PARTIAL_BLOGS:
       return Object.assign({}, state, {
@@ -16,6 +17,7 @@ const partialBlogsByFilter = (state = initialState, action) => {
           loaded: true,
           data: (filter in state ? state[filter].data : [])
             .concat(newPartialBlogs),
+          hasMore,
         }
       });
     case UPDATE_PARTIAL_BLOGS:
@@ -23,6 +25,7 @@ const partialBlogsByFilter = (state = initialState, action) => {
         [filter]: {
           loaded: true,
           data: newPartialBlogs,
+          hasMore,
         }
       });
     case LOAD_PARTIAL_BLOGS:
@@ -30,6 +33,7 @@ const partialBlogsByFilter = (state = initialState, action) => {
         [filter]: {
           loaded: false,
           data: filter in state ? state[filter].data : [],
+          hasMore: true,
         }
       });
     default:

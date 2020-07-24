@@ -1,6 +1,6 @@
 import { LOAD_PARTIAL_BLOGS } from '../actionTypes';
 
-const loadPartialBlogs = (filter = 'all') => ({
+const loadPartialBlogs = filter => ({
   type: LOAD_PARTIAL_BLOGS,
   filter,
 });
