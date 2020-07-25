@@ -61,7 +61,8 @@ class AuthorPartialBlog extends React.Component {
       title,
       preview,
       createdAt,
-      url
+      url,
+      id,
     } = this.props;
     const { isDialogOpen, isDeleting } = this.state;
 
@@ -92,6 +93,8 @@ class AuthorPartialBlog extends React.Component {
                 <Button
                   variant="outlined"
                   color="default"
+                  component={RouterLink}
+                  to={`/writer/blogs/${id}/update`}
                 >
                   Edit
                 </Button>

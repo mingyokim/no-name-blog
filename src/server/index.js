@@ -114,22 +114,59 @@ app.get('/api/v1/blogs/:id', (req, res) => {
     });
 });
 
-app.delete('/api/v1/blogs/:id', (req, res) => {
-  const db = admin.firestore();
-  const { id } = req.params;
-
-  const batch = db.batch();
-  const blogRef = db.collection('blogs').doc(id);
-  batch.delete(blogRef);
-  const partialBlogRef = db.collection('blogs_partial').doc(id);
-  batch.delete(partialBlogRef);
-  batch.commit()
+app.put('/api/v1/blogs/:id', (req, res) => {
+  const sessionCookie = req.cookies.session || '';
+  admin.auth().verifySessionCookie(sessionCookie, true)
     .then(() => {
-      res.send(`successfully deleted blog ${id}`);
+      const db = admin.firestore();
+      const { id } = req.params;
+      const { title, content } = req.body;
+
+      const batch = db.batch();
+      const blogRef = db.collection('blogs').doc(id);
+      batch.update(blogRef, { title, content });
+      const partialBlogRef = db.collection('blogs_partial').doc(id);
+      batch.update(partialBlogRef, { title });
+
+      batch.commit()
+        .then(() => {
+          res.send(`updated blog ${id}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).send('server error');
+        });
     })
     .catch((err) => {
       console.log(err);
-      res.status(404).send('server error');
+      res.status(401).send('invalid session');
+    });
+});
+
+app.delete('/api/v1/blogs/:id', (req, res) => {
+  const sessionCookie = req.cookies.session || '';
+  admin.auth().verifySessionCookie(sessionCookie, true)
+    .then(() => {
+      const db = admin.firestore();
+      const { id } = req.params;
+
+      const batch = db.batch();
+      const blogRef = db.collection('blogs').doc(id);
+      batch.delete(blogRef);
+      const partialBlogRef = db.collection('blogs_partial').doc(id);
+      batch.delete(partialBlogRef);
+      batch.commit()
+        .then(() => {
+          res.send(`successfully deleted blog ${id}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(404).send('server error');
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(401).send('unauthorized');
     });
 });
 

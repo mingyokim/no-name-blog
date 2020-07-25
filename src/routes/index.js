@@ -11,6 +11,7 @@ const RedirectToPageNotFound = loadable(() => import('../client/components/Redir
 const Logout = loadable(() => import('../client/containers/writer/Logout'));
 const NewBlog = loadable(() => import('../client/components/writer/NewBlog'));
 const SignUp = loadable(() => import('../client/containers/writer/SignUp'));
+const UpdateBlog = loadable(() => import('../client/containers/writer/UpdateBlog'));
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
       {
         path: '/writer/new-blog',
         component: NewBlog,
+      },
+      {
+        path: '/writer/blogs/:blog_id/update',
+        component: UpdateBlog,
       },
       {
         path: '/writer',
