@@ -9,9 +9,10 @@ import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 
 import addPartialBlogsAction from '../../../actions/partialBlogs/addPartialBlogs';
+import updatePartialBlogsAction from '../../../actions/partialBlogs/updatePartialBlogs';
 import addBlogURLsAction from '../../../actions/blogURLs/addBlogURLs';
 import Loading from '../../components/blog/PartialBlogLoading';
-import PartialBlog from '../../components/blog/PartialBlog';
+import PartialBlog from '../../components/writer/AuthorPartialBlog';
 
 const styles = () => ({
   root: {
@@ -34,7 +35,7 @@ class AdminPartialBlogsList extends React.Component {
         uid
       },
       partialBlogsByFilter,
-      addPartialBlogs,
+      updatePartialBlogs,
       addBlogURLs,
     } = this.props;
 
@@ -46,12 +47,51 @@ class AdminPartialBlogsList extends React.Component {
         }
       }).then(({ data: { partialBlogs: loadedBlogs } }) => {
         const hasMore = loadedBlogs.length === BATCH_SIZE;
-        addPartialBlogs({ partialBlogs: loadedBlogs, filter: uid, hasMore });
+        updatePartialBlogs({ partialBlogs: loadedBlogs, filter: uid, hasMore });
         addBlogURLs(loadedBlogs);
       }).catch((err) => {
         console.log(err);
       });
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      updatePartialBlogs,
+      partialBlogsByFilter,
+      author: {
+        uid
+      },
+    } = this.props;
+
+    const {
+      partialBlogsByFilter: prevPartialBlogsByFilter
+    } = prevProps;
+
+    const {
+      loaded: newLoaded
+    } = partialBlogsByFilter[uid];
+
+    const prevPartialBlogs = prevPartialBlogsByFilter[uid];
+    if (!prevPartialBlogs) return;
+    const {
+      loaded: prevLoaded
+    } = prevPartialBlogs;
+
+    if (newLoaded || newLoaded === prevLoaded) return;
+
+    axios.get('/api/v1/partial-blogs/', {
+      params: {
+        limit: BATCH_SIZE,
+        author_id: uid,
+      }
+    }).then(({ data: { partialBlogs: loadedBlogs } }) => {
+      const hasMore = loadedBlogs.length === BATCH_SIZE;
+      updatePartialBlogs({ partialBlogs: loadedBlogs, filter: uid, hasMore });
+      addBlogURLs(loadedBlogs);
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   fetchMorePartialBlogs = () => {
@@ -114,7 +154,7 @@ class AdminPartialBlogsList extends React.Component {
         loader={<Loading />}
         className={classes.root}
       >
-        <Grid container spacing={2} direction="column">
+        <Grid container spacing={3} direction="column">
           {partialBlogs.map(({
             id,
             author,
@@ -126,11 +166,12 @@ class AdminPartialBlogsList extends React.Component {
               <>
                 <Grid item>
                   <PartialBlog
-                    author={author}
+                    authorDisplayName={author}
                     title={title}
                     preview={preview}
                     createdAt={createdAt}
                     url={url}
+                    id={id}
                   />
                 </Grid>
                 <Grid item>
@@ -172,6 +213,7 @@ const mapStateToProps = ({ partialBlogsByFilter, author }) => ({
 
 const mapDispatchToProps = dispatch => ({
   addPartialBlogs: ({ partialBlogs, filter, hasMore }) => dispatch(addPartialBlogsAction({ partialBlogs, filter, hasMore })),
+  updatePartialBlogs: ({ partialBlogs, filter, hasMore }) => dispatch(updatePartialBlogsAction({ partialBlogs, filter, hasMore })),
   addBlogURLs: partialBlogs => dispatch(addBlogURLsAction(partialBlogs))
 });
 

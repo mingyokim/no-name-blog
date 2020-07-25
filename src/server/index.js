@@ -114,6 +114,25 @@ app.get('/api/v1/blogs/:id', (req, res) => {
     });
 });
 
+app.delete('/api/v1/blogs/:id', (req, res) => {
+  const db = admin.firestore();
+  const { id } = req.params;
+
+  const batch = db.batch();
+  const blogRef = db.collection('blogs').doc(id);
+  batch.delete(blogRef);
+  const partialBlogRef = db.collection('blogs_partial').doc(id);
+  batch.delete(partialBlogRef);
+  batch.commit()
+    .then(() => {
+      res.send(`successfully deleted blog ${id}`);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).send('server error');
+    });
+});
+
 app.post('/api/v1/blogs/new', (req, res) => {
   const sessionCookie = req.cookies.session || '';
   let blogID;

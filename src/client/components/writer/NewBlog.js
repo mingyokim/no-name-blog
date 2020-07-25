@@ -4,6 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import loadPartialBlogsAction from '../../../actions/partialBlogs/loadPartialBlogs';
 
 class NewBlog extends React.Component {
   constructor(props) {
@@ -26,6 +29,12 @@ class NewBlog extends React.Component {
 
   publish = () => {
     const { title, content } = this.state;
+    const {
+      loadPartialBlogs,
+      author: {
+        uid
+      },
+    } = this.props;
 
     const payload = {
       title,
@@ -34,6 +43,7 @@ class NewBlog extends React.Component {
 
     this.setState({ publishing: true });
     axios.post('/api/v1/blogs/new', payload).then(() => {
+      loadPartialBlogs(uid);
       this.setState({ published: true });
     }).catch((err) => {
       console.log(err);
@@ -88,4 +98,10 @@ class NewBlog extends React.Component {
   }
 }
 
-export default NewBlog;
+const mapStateToProps = ({ author }) => ({ author });
+
+const mapDispatchToProps = dispatch => ({
+  loadPartialBlogs: filter => dispatch(loadPartialBlogsAction(filter)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewBlog);
