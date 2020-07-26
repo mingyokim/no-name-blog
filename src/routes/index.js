@@ -12,6 +12,7 @@ const Logout = loadable(() => import('../client/containers/writer/Logout'));
 const NewBlog = loadable(() => import('../client/components/writer/NewBlog'));
 const SignUp = loadable(() => import('../client/containers/writer/SignUp'));
 const UpdateBlog = loadable(() => import('../client/containers/writer/UpdateBlog'));
+const WriterRoot = loadable(() => import('../client/components/writer/WriterRoot'));
 
 const routes = [
   {
@@ -30,18 +31,6 @@ const routes = [
         component: SignUp,
       },
       {
-        path: '/writer/new-blog',
-        component: NewBlog,
-      },
-      {
-        path: '/writer/blogs/:blog_id/update',
-        component: UpdateBlog,
-      },
-      {
-        path: '/writer',
-        component: WriterHome,
-      },
-      {
         path: '/page-not-found',
         exact: true,
         component: PageNotFound,
@@ -58,7 +47,24 @@ const routes = [
         component: Blog,
       },
       {
-        component: RedirectToPageNotFound,
+        component: WriterRoot,
+        routes: [
+          {
+            path: '/writer/new-blog',
+            component: NewBlog,
+          },
+          {
+            path: '/writer/blogs/:blog_id/update',
+            component: UpdateBlog,
+          },
+          {
+            path: '/writer',
+            component: WriterHome,
+          },
+          {
+            component: RedirectToPageNotFound,
+          },
+        ]
       },
       // {
       //   component: BlogRoot,
