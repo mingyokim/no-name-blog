@@ -13,16 +13,20 @@ const WriterHome = () => (
       <Navbar />
     </Grid>
     <Grid item>
-      <Grid container justify="space-between">
-        <Typography variant="h1">Your blogs</Typography>
-        <Button
-          variant="outlined"
-          color="primary"
-          component={Link}
-          to="/writer/new-blog"
-        >
-          Create a blog
-        </Button>
+      <Grid container justify="space-between" spacing={3}>
+        <Grid item xs={12} md="auto">
+          <Typography variant="h1">Your blogs</Typography>
+        </Grid>
+        <Grid item xs={12} md="auto">
+          <Button
+            variant="outlined"
+            color="primary"
+            component={Link}
+            to="/writer/new-blog"
+          >
+            Create a blog
+          </Button>
+        </Grid>
       </Grid>
     </Grid>
     <Grid item>
