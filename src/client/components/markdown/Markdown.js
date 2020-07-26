@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     marginTop: theme.spacing(1),
-  }
+  },
 }));
 
 const options = () => {
@@ -92,6 +92,11 @@ const options = () => {
           </li>
         ),
       },
+      img: {
+        component: props => (
+          <img style={{ maxWidth: '100%' }} {...props} />
+        ),
+      }
     },
   };
 };
