@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 
-import Navbar from '../../containers/writer/Navbar';
 import PartialBlogsList from '../../containers/writer/AuthorPartialBlogsList';
 
 const WriterHome = () => (
