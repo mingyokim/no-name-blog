@@ -41,6 +41,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-dropzone": "^11.0.2",
     "react-infinite-scroll-component": "4.5.3",
     "react-redux": "^7.2.0",
     "react-router-config": "^5.1.1",

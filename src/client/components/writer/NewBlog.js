@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 import loadPartialBlogsAction from '../../../actions/partialBlogs/loadPartialBlogs';
 import BlogComponent from '../blog/Blog';
+import Dropzone from './Dropzone';
 
 class NewBlog extends React.Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class NewBlog extends React.Component {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           <TextField
             variant="outlined"
             label="Content"
@@ -99,6 +100,9 @@ class NewBlog extends React.Component {
             fullWidth
             rows={10}
           />
+        </Grid>
+        <Grid item xs={12}>
+          <Dropzone />
         </Grid>
         <Grid item>
           <Grid container direction="row" justify="flex-end">
