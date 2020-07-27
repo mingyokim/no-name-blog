@@ -17,9 +17,13 @@ const getImageTag = (filename, downloadURL) => `![${filename}](${downloadURL})`;
 
 const BlogContentEditor = ({ content, onContentChange }) => {
   const contentRef = useRef();
+  const inputRef = useRef();
+  const selectionStartRef = useRef();
+  const [selectionStart, setSelectionStart] = React.useState();
 
   useEffect(() => {
     contentRef.current = content;
+    selectionStartRef.current = selectionStart;
   });
 
   const [uploading, setUploading] = useState(false);
@@ -32,7 +36,13 @@ const BlogContentEditor = ({ content, onContentChange }) => {
       return imageRef.put(file)
         .then(snapshot => snapshot.ref.getDownloadURL())
         .then((downloadURL) => {
-          const newContent = `${contentRef.current} ${getImageTag(file.name, downloadURL)}`;
+          const currentContent = contentRef.current;
+          const currentSelectionStart = selectionStartRef.current;
+          const newContent = [
+            currentContent.slice(0, currentSelectionStart),
+            getImageTag(file.name, downloadURL),
+            currentContent.slice(currentSelectionStart),
+          ].join(' ');
           onContentChange(newContent);
           setUploading(false);
         })
@@ -61,6 +71,8 @@ const BlogContentEditor = ({ content, onContentChange }) => {
         fullWidth
         rows={10}
         disabled={uploading}
+        inputRef={inputRef}
+        onSelect={() => setSelectionStart(inputRef.current.selectionStart)}
         {...rootProps}
       >
         <input {...getInputProps()} />
