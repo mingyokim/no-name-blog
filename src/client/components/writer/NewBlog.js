@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 
 import loadPartialBlogsAction from '../../../actions/partialBlogs/loadPartialBlogs';
 import BlogComponent from '../blog/Blog';
-import Dropzone from './Dropzone';
+import BlogContentEditor from './BlogContentEditor';
 
 class NewBlog extends React.Component {
   constructor(props) {
@@ -28,8 +28,8 @@ class NewBlog extends React.Component {
     this.setState({ title: event.target.value });
   }
 
-  updateContent = (event) => {
-    this.setState({ content: event.target.value });
+  updateContent = (newContent) => {
+    this.setState({ content: newContent });
   }
 
   publish = () => {
@@ -91,18 +91,10 @@ class NewBlog extends React.Component {
           />
         </Grid>
         <Grid item>
-          <TextField
-            variant="outlined"
-            label="Content"
-            onChange={this.updateContent}
-            value={content}
-            multiline
-            fullWidth
-            rows={10}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Dropzone />
+          <BlogContentEditor
+            content={content}
+            onContentChange={this.updateContent}
+            />
         </Grid>
         <Grid item>
           <Grid container direction="row" justify="flex-end">

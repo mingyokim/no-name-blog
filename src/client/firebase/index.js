@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/storage';
 
 // console.log(FB_CLIENT);
 // console.log(JSON.parse(FB_CLIENT));
