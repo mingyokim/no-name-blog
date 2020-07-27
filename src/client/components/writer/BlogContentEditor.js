@@ -1,10 +1,15 @@
-import React, { useCallback, useContext, useState, useRef, useEffect } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useState,
+  useRef,
+  useEffect
+} from 'react';
 import PropTypes from 'prop-types';
-import { useDropzone } from 'react-dropzone'
+import { useDropzone } from 'react-dropzone';
 import TextField from '@material-ui/core/TextField';
 import RootRef from '@material-ui/core/RootRef';
 import { uuid } from 'uuidv4';
-// import { makeStyles } from '@material-ui/core/styles';
 
 import FirebaseContext from '../../firebase/firebaseContext';
 
@@ -29,6 +34,7 @@ const BlogContentEditor = ({ content, onContentChange }) => {
         .then((downloadURL) => {
           const newContent = `${contentRef.current} ${getImageTag(file.name, downloadURL)}`;
           onContentChange(newContent);
+          setUploading(false);
         })
         .catch((err) => {
           console.log(err);
