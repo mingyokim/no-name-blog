@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import loadPartialBlogsAction from '../../../actions/partialBlogs/loadPartialBlogs';
 import removeBlogAction from '../../../actions/blog/removeBlog';
 import BlogComponent from '../blog/Blog';
+import BlogContentEditor from './BlogContentEditor';
 
 class UpdateBlog extends React.Component {
   constructor(props) {
@@ -35,8 +36,8 @@ class UpdateBlog extends React.Component {
     this.setState({ title: event.target.value });
   }
 
-  updateContent = (event) => {
-    this.setState({ content: event.target.value });
+  updateContent = (newContent) => {
+    this.setState({ content: newContent });
   }
 
   publish = () => {
@@ -105,14 +106,9 @@ class UpdateBlog extends React.Component {
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            variant="outlined"
-            label="Content"
-            onChange={this.updateContent}
-            value={content}
-            multiline
-            fullWidth
-            rows={10}
+          <BlogContentEditor
+            content={content}
+            onContentChange={this.updateContent}
           />
         </Grid>
         <Grid item>
