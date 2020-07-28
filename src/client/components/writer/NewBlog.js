@@ -94,13 +94,13 @@ class NewBlog extends React.Component {
           <BlogContentEditor
             content={content}
             onContentChange={this.updateContent}
-            />
+          />
         </Grid>
         <Grid item>
           <Grid container direction="row" justify="flex-end">
             <Grid item>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 onClick={this.publish}
                 disabled={publishing}
