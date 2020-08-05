@@ -279,7 +279,7 @@ app.get(['/writer', '/writer*'], (req, res) => {
     })
     .catch(() => {
       // Session cookie is unavailable or invalid. Force user to login.
-      res.redirect('/login');
+      res.redirect('/logout');
     });
 });
 
